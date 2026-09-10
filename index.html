@@ -679,6 +679,115 @@
                 document.getElementById(`bar-borrow-${g}`).style.width = `${borrowPercent}%`;
                 document.getElementById(`bar-return-${g}`).style.width = `${returnPercent}%`;
             });
+
+        // ตั้งค่า Webhook สำหรับส่งแจ้งเตือนเข้า Discord
+var WEBHOOK_URL = "https://discord.com/api/webhooks/1547244190562521111/Pbg82IFtqd5DlWvTEYNM9aRRgUDC8ikNdYGCZYq-aqF25HlqDtkoFeRJoxyORHLPvGcY";
+
+function doGet(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var data = sheet.getDataRange().getValues();
+  
+  if (data.length <= 1) {
+    return ContentService.createTextOutput(JSON.stringify([]))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+
+  var result = [];
+  for (var i = 1; i < data.length; i++) {
+    var row = data[i];
+    result.push({
+      id: row[0],
+      date: row[1],
+      group: row[2],
+      borrower: row[3],
+      plot: row[4],
+      landGroup: row[5],
+      district: row[6],
+      items: row[7] ? row[7].toString().split(', ') : [],
+      sarabanNo: row[8],
+      remark: row[9],
+      status: row[10]
+    });
+  }
+
+  return ContentService.createTextOutput(JSON.stringify(result))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var data = JSON.parse(e.postData.contents);
+
+  // กรณี: ยืนยันการคืนสารบบ
+  if (data.action === 'return') {
+    var values = sheet.getDataRange().getValues();
+    for (var i = 1; i < values.length; i++) {
+      if (values[i][0] == data.id) {
+        sheet.getRange(i + 1, 11).setValue('คืนสำเร็จ');
+        
+        // ข้อความแจ้งเตือนเมื่อคืนสารบบ
+        var returnMessage = "↩️ **[แจ้งเตือน] คืนสารบบเข้าสู่ระบบ**\n" +
+                            "**ผู้เบิก/คืน:** " + values[i][3] + "\n" +
+                            "**กลุ่มงาน:** " + values[i][2] + "\n" +
+                            "**แปลงที่:** " + values[i][4] + " | **ระวาง:** " + values[i][5] + "\n" +
+                            "**อำเภอ:** " + values[i][6] + "\n" +
+                            "**สถานะ:** คืนเข้าระบบเรียบร้อยแล้ว";
+                            
+        sendDiscordWebhook(returnMessage);
+        break;
+      }
+    }
+  } 
+  // กรณี: ยื่นขอเบิกใหม่
+  else {
+    var itemList = Array.isArray(data.items) ? data.items.join(', ') : data.items;
+    sheet.appendRow([
+      data.id,
+      data.date,
+      data.group,
+      data.borrower,
+      data.plot,
+      data.landGroup,
+      data.district,
+      itemList,
+      data.sarabanNo,
+      data.remark,
+      data.status
+    ]);
+
+    // ข้อความแจ้งเตือนเมื่อยื่นขอเบิกใหม่
+    var borrowMessage = "📝 **[แจ้งเตือน] มีรายการขอเบิกสารบบใหม่**\n" +
+                        "**กลุ่มงาน:** " + data.group + "\n" +
+                        "**ผู้ขอเบิก:** " + data.borrower + "\n" +
+                        "**แปลงที่:** " + data.plot + " | **กลุ่ม/ระวาง:** " + data.landGroup + "\n" +
+                        "**อำเภอ:** " + data.district + "\n" +
+                        "**รายการที่เบิก:** " + itemList + "\n" +
+                        (data.sarabanNo && data.sarabanNo !== '-' ? "**เลขสารบัญ:** " + data.sarabanNo + "\n" : "") +
+                        (data.remark && data.remark !== '-' ? "**หมายเหตุ:** " + data.remark + "\n" : "") +
+                        "**วันที่เบิก:** " + data.date;
+                  
+    sendDiscordWebhook(borrowMessage);
+  }
+
+  return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+// ฟังก์ชันส่งข้อความเข้า Discord Webhook
+function sendDiscordWebhook(messageText) {
+  var options = {
+    "method": "post",
+    "contentType": "application/json",
+    "payload": JSON.stringify({ "content": messageText }),
+    "muteHttpExceptions": true
+  };
+  
+  try {
+    UrlFetchApp.fetch(WEBHOOK_URL, options);
+  } catch (err) {
+    Logger.log("Error sending Webhook: " + err);
+  }
+}
         }
     </script>
 </body>
