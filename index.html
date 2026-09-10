@@ -57,11 +57,11 @@
                 </div>
                 <div class="sidebar-text whitespace-nowrap">
                     <h1 class="font-bold text-white text-base leading-tight">ระบบเบิก-คืน สารบบ</h1>
-                    <p class="text-xs text-white font-medium opacity-90">ส.ป.ก.ชลบุรี</p>
+                    <p class="text-xs text-white font-medium opacity-90">ส.ป.ก.ชลบุรี 🌱</p>
                 </div>
             </div>
 
-            <!-- เมนูหลัก (ปรับตัวหนังสือและไอคอนเป็นสีขาวทั้งหมด) -->
+            <!-- เมนูหลัก -->
             <nav class="p-4 space-y-2">
                 <button onclick="switchTab('section1')" id="btn-section1" class="menu-btn w-full flex items-center space-x-3 px-4 py-3 rounded-2xl transition duration-200 text-white bg-emerald-700 font-medium shadow-sm">
                     <i class="fa-solid fa-layer-group text-lg shrink-0 text-white"></i>
@@ -82,7 +82,7 @@
             </nav>
         </div>
 
-        <!-- Footer แสดงผู้ใช้งาน (ตัวหนังสือสีขาว) -->
+        <!-- Footer แสดงผู้ใช้งาน -->
         <div class="p-4 border-t border-emerald-800/80 bg-black/20">
             <div class="flex items-center space-x-3 overflow-hidden">
                 <div class="w-9 h-9 rounded-2xl bg-emerald-800 text-white flex items-center justify-center font-bold text-sm shrink-0 border border-emerald-600">
@@ -293,11 +293,19 @@
             </div>
         </section>
 
-        <!-- ==================== ส่วนที่ 4: ประวัติสารบบ ==================== -->
+        <!-- ==================== ส่วนที่ 4: ประวัติสารบบ + ช่องค้นหา ==================== -->
         <section id="section4" class="tab-content hidden space-y-6">
-            <header>
-                <h2 class="text-2xl font-bold text-gray-800">📜 ประวัติสารบบ</h2>
-                <p class="text-sm text-gray-500">รวมประวัติการเบิก-คืน ทั้งหมดพร้อมสถานะการดำเนินการ</p>
+            <header class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800">📜 ประวัติสารบบ</h2>
+                    <p class="text-sm text-gray-500">รวมประวัติการเบิก-คืน ทั้งหมดพร้อมสถานะการดำเนินการ</p>
+                </div>
+
+                <!-- ช่องค้นหากลุ่ม/ระวางที่ และข้อมูลอื่นๆ -->
+                <div class="relative w-full md:w-80">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <input type="text" id="searchInput" oninput="renderHistoryTable()" placeholder="ค้นหากลุ่ม/ระวางที่, แปลงที่, ผู้เบิก..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-600 focus:outline-none text-sm bg-white shadow-sm">
+                </div>
             </header>
 
             <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
@@ -572,16 +580,38 @@
             }
         };
 
+        // ฟังก์ชันการแสดงประวัติพร้อมตัวกรองค้นหา
         function renderHistoryTable() {
             const tbody = document.getElementById('historyTableBody');
+            const searchInput = document.getElementById('searchInput');
+            const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
+
             tbody.innerHTML = '';
 
-            if(records.length === 0) {
+            if (records.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-gray-400">ยังไม่มีประวัติการเบิก-คืน</td></tr>`;
                 return;
             }
 
-            records.forEach(item => {
+            // กรองข้อมูลตามคำค้นหา (กลุ่ม/ระวางที่, แปลงที่, อำเภอ, ผู้เบิก, กลุ่มงาน, เลขสารบัญ)
+            const filteredRecords = records.filter(item => {
+                if (!query) return true;
+                return (
+                    (item.landGroup && item.landGroup.toLowerCase().includes(query)) ||
+                    (item.plot && item.plot.toLowerCase().includes(query)) ||
+                    (item.district && item.district.toLowerCase().includes(query)) ||
+                    (item.borrower && item.borrower.toLowerCase().includes(query)) ||
+                    (item.group && item.group.toLowerCase().includes(query)) ||
+                    (item.sarabanNo && item.sarabanNo.toLowerCase().includes(query))
+                );
+            });
+
+            if (filteredRecords.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-gray-400">ไม่พบข้อมูลที่ตรงกับ "${query}"</td></tr>`;
+                return;
+            }
+
+            filteredRecords.forEach(item => {
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-gray-50/50 transition";
                 
