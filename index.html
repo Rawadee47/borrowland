@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ระบบเบิก-คืน สารบบที่ดิน ส.ป.ก.ชลบุรี</title>
     <!-- Google Fonts & Tailwind CSS -->
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome สำหรับไอคอน -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -24,6 +24,7 @@
                             600: '#16a34a',
                             700: '#15803d',
                             800: '#166534',
+                            900: '#064e3b', // เขียวเข้ม Sidebar
                         }
                     },
                     fontFamily: {
@@ -34,136 +35,132 @@
         }
     </script>
     <style>
-        body { font-family: 'Kanit', sans-serif; background-color: #f3f4f6; }
+        body { font-family: 'Kanit', sans-serif; background-color: #f3f4f6; font-size: 17px; } /* ปรับขนาดฟอนต์หลักเพิ่มขึ้น */
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #86efac; border-radius: 10px; }
     </style>
 </head>
-<body class="h-screen flex overflow-hidden text-gray-700">
+<body class="h-screen flex overflow-hidden text-gray-800">
 
-    <!-- ==================== ฝั่งซ้าย: แถบเมนู (Sidebar) ==================== -->
-    <aside class="w-72 bg-white border-r border-gray-200 flex flex-col justify-between shadow-sm z-10">
+    <!-- ==================== ฝั่งซ้าย: แถบเมนู (Sidebar สีเขียวเข้ม) ==================== -->
+    <aside class="w-80 bg-brand-900 text-white flex flex-col justify-between shadow-lg z-10">
         <div>
             <!-- โลโก้ & ชื่อระบบ -->
-            <div class="p-6 bg-brand-50 border-b border-brand-100 flex items-center space-x-3">
-                <div class="w-12 h-12 bg-brand-600 text-white rounded-2xl flex items-center justify-center text-2xl shadow-md">
+            <div class="p-6 bg-brand-800/60 border-b border-brand-700/50 flex items-center space-x-3">
+                <div class="w-14 h-14 bg-emerald-500 text-white rounded-2xl flex items-center justify-center text-3xl shadow-md">
                     <i class="fa-solid fa-layer-group"></i>
                 </div>
                 <div>
-                    <h1 class="font-bold text-brand-800 leading-tight">ระบบเบิก-คืน สารบบ</h1>
-                    <p class="text-xs text-brand-600 font-medium">ส.ป.ก.ชลบุรี 🌱</p>
+                    <h1 class="font-bold text-white text-lg leading-tight">ระบบเบิก-คืน สารบบ</h1>
+                    <p class="text-sm text-emerald-300 font-medium">ส.ป.ก.ชลบุรี 🌱</p>
                 </div>
             </div>
 
             <!-- เมนูหลัก -->
             <nav class="p-4 space-y-2">
-                <button onclick="switchTab('section1')" id="btn-section1" class="menu-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition duration-200 text-brand-700 bg-brand-100 font-medium">
-                    <i class="fa-solid fa-layer-group text-lg"></i>
+                <button onclick="switchTab('section1')" id="btn-section1" class="menu-btn w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl transition duration-200 text-white bg-emerald-600 font-medium text-base">
+                    <i class="fa-solid fa-layer-group text-xl"></i>
                     <span>หน้ารวมแต่ละกลุ่มงาน</span>
                 </button>
-                <button onclick="switchTab('section2')" id="btn-section2" class="menu-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition duration-200 text-gray-500 hover:bg-brand-50 hover:text-brand-600">
-                    <i class="fa-solid fa-file-pen text-lg"></i>
+                <button onclick="switchTab('section2')" id="btn-section2" class="menu-btn w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl transition duration-200 text-emerald-100/70 hover:bg-brand-800 hover:text-white text-base">
+                    <i class="fa-solid fa-file-pen text-xl"></i>
                     <span>แบบฟอร์มขอเบิก</span>
                 </button>
-                <button onclick="switchTab('section3')" id="btn-section3" class="menu-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition duration-200 text-gray-500 hover:bg-brand-50 hover:text-brand-600">
-                    <i class="fa-solid fa-clock-rotate-left text-lg"></i>
+                <button onclick="switchTab('section3')" id="btn-section3" class="menu-btn w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl transition duration-200 text-emerald-100/70 hover:bg-brand-800 hover:text-white text-base">
+                    <i class="fa-solid fa-clock-rotate-left text-xl"></i>
                     <span>กำลังดำเนินการ</span>
                 </button>
-                <button onclick="switchTab('section4')" id="btn-section4" class="menu-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition duration-200 text-gray-500 hover:bg-brand-50 hover:text-brand-600">
-                    <i class="fa-solid fa-folder-open text-lg"></i>
-                    <span>ประวัติสารบบ</span>
+                <button onclick="switchTab('section4')" id="btn-section4" class="menu-btn w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl transition duration-200 text-emerald-100/70 hover:bg-brand-800 hover:text-white text-base">
+                    <i class="fa-solid fa-folder-open text-xl"></i>
+                    <span>ประวัติสารบบทั้งหมด</span>
                 </button>
             </nav>
         </div>
 
-        <!-- Footer แสดงผู้ใช้งาน -->
-        <div class="p-4 border-t border-gray-100 bg-gray-50">
-            <div class="flex items-center space-x-2">
-                <div class="w-8 h-8 rounded-full bg-brand-200 text-brand-800 flex items-center justify-center font-bold text-sm">
-                    <i class="fa-solid fa-user-shield"></i>
+        <!-- Footer แสดงสถานะการเชื่อมต่อ -->
+        <div class="p-4 border-t border-brand-800 bg-brand-950/40">
+            <div class="flex items-center space-x-3">
+                <div class="w-9 h-9 rounded-full bg-emerald-700 text-emerald-100 flex items-center justify-center font-bold text-base">
+                    <i class="fa-solid fa-database"></i>
                 </div>
                 <div>
-                    <p class="text-xs font-semibold text-gray-700">ผู้ดูแลระบบ</p>
-                    <p class="text-[10px] text-green-600">● เชื่อมต่อ Webhook แล้ว</p>
+                    <p class="text-sm font-semibold text-white">ระบบออนไลน์รวม</p>
+                    <p class="text-xs text-emerald-400" id="syncStatus">● ซิงค์ข้อมูลทุกเครื่อง</p>
                 </div>
             </div>
         </div>
     </aside>
 
-    <!-- ==================== ฝั่งขวา: เนื้อหาหลัก (Content Area) ==================== -->
+    <!-- ==================== ฝั่งขวา: เนื้อหาหลัก ==================== -->
     <main class="flex-1 overflow-y-auto custom-scrollbar p-8 bg-[#f5f6f8]">
 
         <!-- ==================== ส่วนที่ 1: หน้ารวมแต่ละกลุ่มงาน ==================== -->
         <section id="section1" class="tab-content space-y-6">
             <header class="flex items-center space-x-3">
-                <i class="fa-solid fa-layer-group text-2xl text-gray-700"></i>
+                <i class="fa-solid fa-layer-group text-3xl text-gray-700"></i>
                 <h2 class="text-2xl font-bold text-gray-800">หน้ารวมแต่ละกลุ่มงาน</h2>
             </header>
 
-            <!-- การ์ดกลุ่มงาน 3 กลุ่ม -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <!-- ช่างและแผนที่ -->
-                <div onclick="openBorrowForm('กลุ่มงานช่างและแผนที่')" class="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm hover:border-brand-500 hover:shadow-md transition cursor-pointer text-center flex flex-col items-center justify-center min-h-[200px]">
-                    <div class="text-brand-700 text-4xl mb-3">
+                <div onclick="openBorrowForm('กลุ่มงานช่างและแผนที่')" class="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm hover:border-brand-500 hover:shadow-md transition cursor-pointer text-center flex flex-col items-center justify-center min-h-[220px]">
+                    <div class="text-brand-700 text-5xl mb-3">
                         <i class="fa-solid fa-compass-drafting"></i>
                     </div>
-                    <h3 class="text-lg font-bold text-gray-800">กลุ่มงานช่างและแผนที่</h3>
-                    <p class="text-xs text-gray-400 mt-1">คลิกเพื่อไปที่แบบฟอร์มขอเบิก</p>
+                    <h3 class="text-xl font-bold text-gray-800">กลุ่มงานช่างและแผนที่</h3>
+                    <p class="text-sm text-gray-400 mt-2">คลิกเพื่อไปที่แบบฟอร์มขอเบิก</p>
                 </div>
 
                 <!-- กฎหมาย -->
-                <div onclick="openBorrowForm('กลุ่มกฎหมาย')" class="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm hover:border-brand-500 hover:shadow-md transition cursor-pointer text-center flex flex-col items-center justify-center min-h-[200px]">
-                    <div class="text-brand-700 text-4xl mb-3">
+                <div onclick="openBorrowForm('กลุ่มกฎหมาย')" class="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm hover:border-brand-500 hover:shadow-md transition cursor-pointer text-center flex flex-col items-center justify-center min-h-[220px]">
+                    <div class="text-brand-700 text-5xl mb-3">
                         <i class="fa-solid fa-scale-balanced"></i>
                     </div>
-                    <h3 class="text-lg font-bold text-gray-800">กลุ่มกฎหมาย</h3>
-                    <p class="text-xs text-gray-400 mt-1">คลิกเพื่อไปที่แบบฟอร์มขอเบิก</p>
+                    <h3 class="text-xl font-bold text-gray-800">กลุ่มกฎหมาย</h3>
+                    <p class="text-sm text-gray-400 mt-2">คลิกเพื่อไปที่แบบฟอร์มขอเบิก</p>
                 </div>
 
                 <!-- ยุทธศาสตร์ฯ -->
-                <div onclick="openBorrowForm('กลุ่มยุทธศาสตร์ฯ')" class="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm hover:border-brand-500 hover:shadow-md transition cursor-pointer text-center flex flex-col items-center justify-center min-h-[200px]">
-                    <div class="text-brand-700 text-4xl mb-3">
+                <div onclick="openBorrowForm('กลุ่มยุทธศาสตร์ฯ')" class="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm hover:border-brand-500 hover:shadow-md transition cursor-pointer text-center flex flex-col items-center justify-center min-h-[220px]">
+                    <div class="text-brand-700 text-5xl mb-3">
                         <i class="fa-solid fa-chart-line"></i>
                     </div>
-                    <h3 class="text-lg font-bold text-gray-800">กลุ่มยุทธศาสตร์ฯ</h3>
-                    <p class="text-xs text-gray-400 mt-1">คลิกเพื่อไปที่แบบฟอร์มขอเบิก</p>
+                    <h3 class="text-xl font-bold text-gray-800">กลุ่มยุทธศาสตร์ฯ</h3>
+                    <p class="text-sm text-gray-400 mt-2">คลิกเพื่อไปที่แบบฟอร์มขอเบิก</p>
                 </div>
             </div>
 
             <!-- แผนภูมิแสดงอัตราการเบิกและการคืนซอง -->
             <div class="bg-white p-8 rounded-2xl border border-gray-200 shadow-sm mt-8 space-y-6">
-                <h3 class="text-lg font-bold text-gray-800">แผนภูมิแสดงอัตราการเบิกและการคืนซองของแต่ละกลุ่มงาน</h3>
+                <h3 class="text-xl font-bold text-gray-800">แผนภูมิแสดงอัตราการเบิกและการคืนซองของแต่ละกลุ่มงาน</h3>
                 
                 <div class="space-y-6">
-                    <!-- รายการที่ 1: ช่างและแผนที่ -->
                     <div class="space-y-2">
-                        <div class="text-sm font-semibold text-gray-700">
+                        <div class="text-base font-semibold text-gray-700">
                             กลุ่มงานช่างและแผนที่ (<span id="stat-borrow-ช่าง">เบิกไปแล้ว 0 ซอง</span> / <span id="stat-return-ช่าง">คืนแล้ว 0 ซอง</span>)
                         </div>
-                        <div class="w-full bg-gray-100 h-6 rounded-lg overflow-hidden flex">
+                        <div class="w-full bg-gray-100 h-7 rounded-lg overflow-hidden flex">
                             <div id="bar-borrow-ช่าง" class="bg-brand-600 h-full transition-all duration-500" style="width: 0%"></div>
                             <div id="bar-return-ช่าง" class="bg-brand-300 h-full transition-all duration-500" style="width: 0%"></div>
                         </div>
                     </div>
 
-                    <!-- รายการที่ 2: กฎหมาย -->
                     <div class="space-y-2">
-                        <div class="text-sm font-semibold text-gray-700">
+                        <div class="text-base font-semibold text-gray-700">
                             กลุ่มกฎหมาย (<span id="stat-borrow-กฎหมาย">เบิกไปแล้ว 0 ซอง</span> / <span id="stat-return-กฎหมาย">คืนแล้ว 0 ซอง</span>)
                         </div>
-                        <div class="w-full bg-gray-100 h-6 rounded-lg overflow-hidden flex">
+                        <div class="w-full bg-gray-100 h-7 rounded-lg overflow-hidden flex">
                             <div id="bar-borrow-กฎหมาย" class="bg-brand-600 h-full transition-all duration-500" style="width: 0%"></div>
                             <div id="bar-return-กฎหมาย" class="bg-brand-300 h-full transition-all duration-500" style="width: 0%"></div>
                         </div>
                     </div>
 
-                    <!-- รายการที่ 3: ยุทธศาสตร์ฯ -->
                     <div class="space-y-2">
-                        <div class="text-sm font-semibold text-gray-700">
+                        <div class="text-base font-semibold text-gray-700">
                             กลุ่มยุทธศาสตร์ฯ (<span id="stat-borrow-ยุทธศาสตร์">เบิกไปแล้ว 0 ซอง</span> / <span id="stat-return-ยุทธศาสตร์">คืนแล้ว 0 ซอง</span>)
                         </div>
-                        <div class="w-full bg-gray-100 h-6 rounded-lg overflow-hidden flex">
+                        <div class="w-full bg-gray-100 h-7 rounded-lg overflow-hidden flex">
                             <div id="bar-borrow-ยุทธศาสตร์" class="bg-brand-600 h-full transition-all duration-500" style="width: 0%"></div>
                             <div id="bar-return-ยุทธศาสตร์" class="bg-brand-300 h-full transition-all duration-500" style="width: 0%"></div>
                         </div>
@@ -176,36 +173,36 @@
         <section id="section2" class="tab-content hidden space-y-6">
             <header>
                 <h2 class="text-2xl font-bold text-gray-800">📝 แบบฟอร์มขออนุมัติเบิกสารบบ</h2>
-                <p class="text-sm text-gray-500">กรอกข้อมูลรายละเอียดการขอเบิกสารบบที่ดิน</p>
+                <p class="text-base text-gray-500">กรอกข้อมูลรายละเอียดการขอเบิกสารบบที่ดิน</p>
             </header>
 
             <form id="borrowForm" onsubmit="handleFormSubmit(event)" class="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm space-y-6 max-w-4xl mx-auto">
                 <div class="text-center py-3 bg-brand-50 rounded-xl border border-brand-200">
-                    <span class="text-xs text-brand-600 font-medium">แบบฟอร์มขอเบิกสำหรับ</span>
-                    <h3 id="formGroupDisplay" class="text-xl font-bold text-brand-800">กลุ่มงานช่างและแผนที่</h3>
+                    <span class="text-sm text-brand-600 font-medium">แบบฟอร์มขอเบิกสำหรับ</span>
+                    <h3 id="formGroupDisplay" class="text-2xl font-bold text-brand-800">กลุ่มงานช่างและแผนที่</h3>
                     <input type="hidden" id="selectedGroup" value="กลุ่มงานช่างและแผนที่">
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">วันที่เบิก <span class="text-red-500">*</span></label>
-                        <input type="date" id="borrowDate" required class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                        <label class="block text-base font-medium text-gray-700 mb-1">วันที่เบิก <span class="text-red-500">*</span></label>
+                        <input type="date" id="borrowDate" required class="w-full px-4 py-3 rounded-xl border border-gray-300 text-base focus:ring-2 focus:ring-brand-500 focus:outline-none">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">ชื่อผู้เบิก <span class="text-red-500">*</span></label>
-                        <input type="text" id="borrowerName" placeholder="ระบุชื่อ-นามสกุล" required class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                        <label class="block text-base font-medium text-gray-700 mb-1">ชื่อผู้เบิก <span class="text-red-500">*</span></label>
+                        <input type="text" id="borrowerName" placeholder="ระบุชื่อ-นามสกุล" required class="w-full px-4 py-3 rounded-xl border border-gray-300 text-base focus:ring-2 focus:ring-brand-500 focus:outline-none">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">แปลงที่ <span class="text-red-500">*</span></label>
-                        <input type="text" id="landPlot" placeholder="ระบุเลขแปลงที่" required class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                        <label class="block text-base font-medium text-gray-700 mb-1">แปลงที่ <span class="text-red-500">*</span></label>
+                        <input type="text" id="landPlot" placeholder="ระบุเลขแปลงที่" required class="w-full px-4 py-3 rounded-xl border border-gray-300 text-base focus:ring-2 focus:ring-brand-500 focus:outline-none">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">กลุ่ม/ระวางที่ <span class="text-red-500">*</span></label>
-                        <input type="text" id="landGroup" placeholder="ระบุกลุ่มหรือระวาง" required class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                        <label class="block text-base font-medium text-gray-700 mb-1">กลุ่ม/ระวางที่ <span class="text-red-500">*</span></label>
+                        <input type="text" id="landGroup" placeholder="ระบุกลุ่มหรือระวาง" required class="w-full px-4 py-3 rounded-xl border border-gray-300 text-base focus:ring-2 focus:ring-brand-500 focus:outline-none">
                     </div>
                     <div class="md:col-span-2">
-                        <label class="block text-sm font-medium text-gray-700 mb-1">อำเภอ <span class="text-red-500">*</span></label>
-                        <select id="district" required class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                        <label class="block text-base font-medium text-gray-700 mb-1">อำเภอ <span class="text-red-500">*</span></label>
+                        <select id="district" required class="w-full px-4 py-3 rounded-xl border border-gray-300 text-base focus:ring-2 focus:ring-brand-500 focus:outline-none">
                             <option value="" disabled selected>-- เลือกอำเภอ --</option>
                             <option value="อ.เกาะจันทร์">อ.เกาะจันทร์</option>
                             <option value="อ.บ่อทอง">อ.บ่อทอง</option>
@@ -216,43 +213,49 @@
                     </div>
                 </div>
 
-                <div class="border-t border-gray-100 pt-4">
-                    <label class="block text-sm font-semibold text-gray-800 mb-3">รายการที่จะเบิก (เลือกได้มากกว่า 1 รายการ) <span class="text-red-500">*</span></label>
+                <div class="border-t border-gray-200 pt-4">
+                    <label class="block text-base font-semibold text-gray-800 mb-3">รายการที่จะเบิก (เลือกได้มากกว่า 1 รายการ) <span class="text-red-500">*</span></label>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <label class="flex items-center space-x-3 p-3 rounded-xl border border-gray-100 hover:bg-brand-50/50 cursor-pointer">
-                            <input type="checkbox" name="items" value="ซอง" class="w-4 h-4 text-brand-600 rounded focus:ring-brand-500">
-                            <span class="text-sm font-medium text-gray-700">ซอง</span>
+                        <label class="flex items-center space-x-3 p-3.5 rounded-xl border border-gray-200 hover:bg-brand-50/50 cursor-pointer">
+                            <input type="checkbox" name="items" value="ซอง" class="w-5 h-5 text-brand-600 rounded focus:ring-brand-500">
+                            <span class="text-base font-medium text-gray-700">ซอง</span>
                         </label>
-                        <label class="flex items-center space-x-3 p-3 rounded-xl border border-gray-100 hover:bg-brand-50/50 cursor-pointer">
-                            <input type="checkbox" name="items" value="สำเนา 4-01" onchange="toggleSarabanInput()" class="w-4 h-4 text-brand-600 rounded focus:ring-brand-500 item-checkbox">
-                            <span class="text-sm font-medium text-gray-700">สำเนา 4-01</span>
+                        <label class="flex items-center space-x-3 p-3.5 rounded-xl border border-gray-200 hover:bg-brand-50/50 cursor-pointer">
+                            <input type="checkbox" name="items" value="สำเนา 4-01" onchange="toggleSarabanInput()" class="w-5 h-5 text-brand-600 rounded focus:ring-brand-500 item-checkbox">
+                            <span class="text-base font-medium text-gray-700">สำเนา 4-01</span>
                         </label>
-                        <label class="flex items-center space-x-3 p-3 rounded-xl border border-gray-100 hover:bg-brand-50/50 cursor-pointer">
-                            <input type="checkbox" name="items" value="สำเนาโฉนดฯ" onchange="toggleSarabanInput()" class="w-4 h-4 text-brand-600 rounded focus:ring-brand-500 item-checkbox">
-                            <span class="text-sm font-medium text-gray-700">สำเนาโฉนดฯ</span>
+                        <label class="flex items-center space-x-3 p-3.5 rounded-xl border border-gray-200 hover:bg-brand-50/50 cursor-pointer">
+                            <input type="checkbox" name="items" value="สำเนาโฉนดฯ" onchange="toggleSarabanInput()" class="w-5 h-5 text-brand-600 rounded focus:ring-brand-500 item-checkbox">
+                            <span class="text-base font-medium text-gray-700">สำเนาโฉนดฯ</span>
                         </label>
-                        <label class="flex items-center space-x-3 p-3 rounded-xl border border-gray-100 hover:bg-brand-50/50 cursor-pointer">
-                            <input type="checkbox" name="items" value="คำร้องออกโฉนดฯ" class="w-4 h-4 text-brand-600 rounded focus:ring-brand-500">
-                            <span class="text-sm font-medium text-gray-700">คำร้องออกโฉนดฯ</span>
+                        <label class="flex items-center space-x-3 p-3.5 rounded-xl border border-gray-200 hover:bg-brand-50/50 cursor-pointer">
+                            <input type="checkbox" name="items" value="คำร้องออกโฉนดฯ" class="w-5 h-5 text-brand-600 rounded focus:ring-brand-500">
+                            <span class="text-base font-medium text-gray-700">คำร้องออกโฉนดฯ</span>
                         </label>
                     </div>
 
                     <div id="sarabanBox" class="hidden mt-4 p-4 bg-amber-50 rounded-xl border border-amber-200">
-                        <label class="block text-sm font-medium text-amber-900 mb-1">เลขสารบัญ <span class="text-red-500">* (จำเป็นต้องระบุเนื่องจากเลือก สำเนา 4-01 หรือ สำเนาโฉนดฯ)</span></label>
-                        <input type="text" id="sarabanNumber" placeholder="ระบุเลขสารบัญ..." class="w-full px-4 py-2 bg-white rounded-lg border border-amber-300 focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                        <label class="block text-base font-medium text-amber-900 mb-1">เลขสารบัญ <span class="text-red-500">* (จำเป็นต้องระบุเนื่องจากเลือก สำเนา 4-01 หรือ สำเนาโฉนดฯ)</span></label>
+                        <input type="text" id="sarabanNumber" placeholder="ระบุเลขสารบัญ..." class="w-full px-4 py-2.5 bg-white rounded-lg border border-amber-300 text-base focus:ring-2 focus:ring-amber-500 focus:outline-none">
                     </div>
 
                     <div class="mt-3">
-                        <label class="flex items-center space-x-3 p-3 rounded-xl border border-gray-100 hover:bg-brand-50/50 cursor-pointer">
-                            <input type="checkbox" id="otherCheck" onchange="toggleOtherInput()" class="w-4 h-4 text-brand-600 rounded focus:ring-brand-500">
-                            <span class="text-sm font-medium text-gray-700">อื่น ๆ โปรดระบุ</span>
+                        <label class="flex items-center space-x-3 p-3.5 rounded-xl border border-gray-200 hover:bg-brand-50/50 cursor-pointer">
+                            <input type="checkbox" id="otherCheck" onchange="toggleOtherInput()" class="w-5 h-5 text-brand-600 rounded focus:ring-brand-500">
+                            <span class="text-base font-medium text-gray-700">อื่น ๆ โปรดระบุ</span>
                         </label>
-                        <input type="text" id="otherDetail" placeholder="ระบุรายละเอียดเอกสารอื่นๆ..." class="hidden mt-2 w-full px-4 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                        <input type="text" id="otherDetail" placeholder="ระบุรายละเอียดเอกสารอื่นๆ..." class="hidden mt-2 w-full px-4 py-2.5 rounded-xl border border-gray-300 text-base focus:ring-2 focus:ring-brand-500 focus:outline-none">
                     </div>
                 </div>
 
+                <!-- ข้อ 2: เพิ่มช่อง หมายเหตุ (ถ้ามี) -->
+                <div class="border-t border-gray-200 pt-4">
+                    <label class="block text-base font-medium text-gray-700 mb-1">หมายเหตุ (ถ้ามี)</label>
+                    <textarea id="borrowRemark" rows="2" placeholder="ระบุหมายเหตุเพิ่มเติม..." class="w-full px-4 py-2.5 rounded-xl border border-gray-300 text-base focus:ring-2 focus:ring-brand-500 focus:outline-none"></textarea>
+                </div>
+
                 <div class="pt-4">
-                    <button type="submit" class="w-full py-3 bg-brand-600 text-white font-medium rounded-xl shadow-md hover:bg-brand-700 transition flex items-center justify-center space-x-2">
+                    <button type="submit" class="w-full py-3.5 bg-brand-600 text-white font-medium text-lg rounded-xl shadow-md hover:bg-brand-700 transition flex items-center justify-center space-x-2">
                         <i class="fa-solid fa-paper-plane"></i>
                         <span>ยื่นขอเบิกสารบบ</span>
                     </button>
@@ -262,49 +265,61 @@
 
         <!-- ==================== ส่วนที่ 3: กำลังดำเนินการ ==================== -->
         <section id="section3" class="tab-content hidden space-y-6">
-            <header>
-                <h2 class="text-2xl font-bold text-gray-800">⏳ รายการกำลังดำเนินการ</h2>
-                <p class="text-sm text-gray-500">รายการสารบบที่ถูกเบิกและอยู่ระหว่างการใช้งาน แยกตามกลุ่มงาน</p>
+            <header class="flex justify-between items-center">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800">⏳ รายการกำลังดำเนินการ</h2>
+                    <p class="text-base text-gray-500">รายการสารบบที่ถูกเบิกและอยู่ระหว่างการใช้งาน แยกตามกลุ่มงาน</p>
+                </div>
+                <button onclick="loadRemoteData()" class="px-4 py-2 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 text-sm font-medium shadow-sm">
+                    <i class="fa-solid fa-arrows-rotate mr-1"></i> รีเฟรชข้อมูล
+                </button>
             </header>
 
             <div class="flex space-x-2 border-b border-gray-200 pb-2">
-                <button onclick="filterActiveGroup('กลุ่มงานช่างและแผนที่')" id="tab-group-ช่าง" class="group-tab px-4 py-2 rounded-lg font-medium text-sm bg-brand-600 text-white shadow-sm">
+                <button onclick="filterActiveGroup('กลุ่มงานช่างและแผนที่')" id="tab-group-ช่าง" class="group-tab px-5 py-2.5 rounded-lg font-medium text-base bg-brand-600 text-white shadow-sm">
                     กลุ่มงานช่างและแผนที่
                 </button>
-                <button onclick="filterActiveGroup('กลุ่มกฎหมาย')" id="tab-group-กฎหมาย" class="group-tab px-4 py-2 rounded-lg font-medium text-sm text-gray-600 hover:bg-gray-100">
+                <button onclick="filterActiveGroup('กลุ่มกฎหมาย')" id="tab-group-กฎหมาย" class="group-tab px-5 py-2.5 rounded-lg font-medium text-base text-gray-600 hover:bg-gray-100">
                     กลุ่มกฎหมาย
                 </button>
-                <button onclick="filterActiveGroup('กลุ่มยุทธศาสตร์ฯ')" id="tab-group-ยุทธศาสตร์" class="group-tab px-4 py-2 rounded-lg font-medium text-sm text-gray-600 hover:bg-gray-100">
+                <button onclick="filterActiveGroup('กลุ่มยุทธศาสตร์ฯ')" id="tab-group-ยุทธศาสตร์" class="group-tab px-5 py-2.5 rounded-lg font-medium text-base text-gray-600 hover:bg-gray-100">
                     กลุ่มยุทธศาสตร์ฯ
                 </button>
             </div>
 
-            <div id="activeListContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div id="activeListContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Rendered dynamically -->
             </div>
         </section>
 
-        <!-- ==================== ส่วนที่ 4: ประวัติสารบบ ==================== -->
+        <!-- ==================== ส่วนที่ 4: ประวัติสารบบทั้งหมด ==================== -->
         <section id="section4" class="tab-content hidden space-y-6">
-            <header>
-                <h2 class="text-2xl font-bold text-gray-800">📜 ประวัติสารบบ</h2>
-                <p class="text-sm text-gray-500">รวมประวัติการเบิก-คืน ทั้งหมดพร้อมสถานะการดำเนินการ</p>
+            <header class="flex justify-between items-center">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800">📜 ประวัติสารบบทั้งหมดทุกเครื่อง</h2>
+                    <p class="text-base text-gray-500">รวมประวัติการเบิก-คืน ทั้งหมด ซิงค์ตรงจากฐานข้อมูล central</p>
+                </div>
+                <button onclick="loadRemoteData()" class="px-4 py-2 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 text-sm font-medium shadow-sm">
+                    <i class="fa-solid fa-arrows-rotate mr-1"></i> รีเฟรชข้อมูล
+                </button>
             </header>
 
             <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
-                            <tr class="bg-brand-50 border-b border-brand-100 text-xs font-semibold text-brand-800 uppercase">
+                            <tr class="bg-brand-50 border-b border-brand-100 text-sm font-semibold text-brand-800 uppercase">
                                 <th class="p-4">วันที่เบิก</th>
                                 <th class="p-4">กลุ่มงาน</th>
                                 <th class="p-4">ผู้เบิก</th>
                                 <th class="p-4">แปลง / ระวาง / อำเภอ</th>
                                 <th class="p-4">รายการที่เบิก</th>
+                                <th class="p-4">หมายเหตุ</th>
                                 <th class="p-4 text-center">สถานะ</th>
+                                <th class="p-4 text-center">จัดการ</th>
                             </tr>
                         </thead>
-                        <tbody id="historyTableBody" class="divide-y divide-gray-100 text-sm">
+                        <tbody id="historyTableBody" class="divide-y divide-gray-200 text-base">
                             <!-- Rendered dynamically -->
                         </tbody>
                     </table>
@@ -315,65 +330,97 @@
     </main>
 
     <!-- Modal ยืนยันการคืนเอกสาร -->
-    <div id="returnModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden flex items-center justify-center z-50">
+    <div id="returnModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden flex items-center justify-center z-50">
         <div class="bg-white rounded-2xl p-6 w-full max-w-md shadow-xl border border-brand-100 text-center space-y-4">
-            <div class="w-16 h-16 bg-brand-100 text-brand-600 rounded-full flex items-center justify-center mx-auto text-2xl">
+            <div class="w-16 h-16 bg-brand-100 text-brand-600 rounded-full flex items-center justify-center mx-auto text-3xl">
                 <i class="fa-solid fa-rotate-left"></i>
             </div>
-            <h3 class="text-xl font-bold text-gray-800">ยืนยันการคืนสารบบ</h3>
-            <p class="text-sm text-gray-500">คุณต้องการยืนยันการคืนสารบบรายการนี้เข้าสู่ระบบใช่หรือไม่?</p>
+            <h3 class="text-2xl font-bold text-gray-800">ยืนยันการคืนสารบบ</h3>
+            <p class="text-base text-gray-600">คุณต้องการยืนยันการคืนสารบบรายการนี้เข้าสู่ระบบใช่หรือไม่?</p>
             
-            <div id="modalItemDetails" class="bg-gray-50 p-3 rounded-xl text-left text-xs text-gray-600 space-y-1"></div>
+            <div id="modalItemDetails" class="bg-gray-50 p-4 rounded-xl text-left text-sm text-gray-700 space-y-1 border border-gray-100"></div>
             
             <div class="flex space-x-3 pt-2">
-                <button onclick="closeReturnModal()" class="flex-1 py-2.5 rounded-xl border border-gray-200 font-medium text-gray-600 hover:bg-gray-50">ยกเลิก</button>
-                <button id="confirmReturnBtn" class="flex-1 py-2.5 rounded-xl bg-brand-600 text-white font-medium hover:bg-brand-700 shadow-sm">ยืนยันการคืน</button>
+                <button onclick="closeReturnModal()" class="flex-1 py-3 rounded-xl border border-gray-300 font-medium text-gray-700 hover:bg-gray-50 text-base">ยกเลิก</button>
+                <button id="confirmReturnBtn" class="flex-1 py-3 rounded-xl bg-brand-600 text-white font-medium hover:bg-brand-700 shadow-sm text-base">ยืนยันการคืน</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ข้อ 4: Modal ยืนยันการลบรายการ -->
+    <div id="deleteModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden flex items-center justify-center z-50">
+        <div class="bg-white rounded-2xl p-6 w-full max-w-md shadow-xl border border-red-100 text-center space-y-4">
+            <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto text-3xl">
+                <i class="fa-solid fa-trash-can"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800">ยืนยันการลบรายการ</h3>
+            <p class="text-base text-gray-600">คุณต้องการลบรายการเบิกสารบบนี้ออกจากระบบใช่หรือไม่? (ไม่สามารถย้อนคืนได้)</p>
+            
+            <div id="deleteModalDetails" class="bg-red-50 p-4 rounded-xl text-left text-sm text-red-800 space-y-1 border border-red-100"></div>
+            
+            <div class="flex space-x-3 pt-2">
+                <button onclick="closeDeleteModal()" class="flex-1 py-3 rounded-xl border border-gray-300 font-medium text-gray-700 hover:bg-gray-50 text-base">ยกเลิก</button>
+                <button id="confirmDeleteBtn" class="flex-1 py-3 rounded-xl bg-red-600 text-white font-medium hover:bg-red-700 shadow-sm text-base">ยืนยันลบรายการ</button>
             </div>
         </div>
     </div>
 
     <!-- JavaScript logic -->
     <script>
-const WEBHOOK_URL = "https://discord.com/api/webhooks/1547244190562521111/Pbg82IFtqd5DlWvTEYNM9aRRgUDC8ikNdYGCZYq-aqF25HlqDtkoFeRJoxyORHLPvGcY";
-const GOOGLE_SHEET_URL = "นhttps://script.google.com/macros/s/AKfycbwY50XI9P_EU8IIblP2jjfY8itvleCFUiZyE6D-TN_sAVmtQhdj8OsfMjE9H5VKavtL6A/exec"; 
-
-// แล้วเพิ่มฟังก์ชันส่งข้อมูลลง Sheet
-function sendToGoogleSheet(data) {
-    if (!GOOGLE_SHEET_URL || GOOGLE_SHEET_URL.includes("นำ URL")) return;
-    
-    fetch(GOOGLE_SHEET_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-    }).catch(err => console.error("Sheet Error:", err));
-}
+        const WEBHOOK_URL = "https://discord.com/api/webhooks/1547244190562521111/Pbg82IFtqd5DlWvTEYNM9aRRgUDC8ikNdYGCZYq-aqF25HlqDtkoFeRJoxyORHLPvGcY";
         
+        // ** นำ Web App URL ที่ได้จาก Google Apps Script มาวางตรงนี้ **
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyBagCmnbvG4ZKX_0EpGfX_SotqWUspDQg7GNOQ2-_baEPlCndK-qpyo_HLl43RTVl3/exec"; 
 
         let records = [];
         let currentActiveGroupFilter = 'กลุ่มงานช่างและแผนที่';
         let pendingReturnId = null;
+        let pendingDeleteId = null;
 
         window.onload = () => {
             document.getElementById('borrowDate').valueAsDate = new Date();
-            updateDashboardStats();
-            renderActiveList();
-            renderHistoryTable();
+            loadRemoteData();
         };
+
+        // ดึงข้อมูลทั้งหมดจาก Google Sheet เพื่อให้เห็นเหมือนกันทุกเครื่อง
+        function loadRemoteData() {
+            document.getElementById('syncStatus').innerText = "⏳ กำลังดึงข้อมูล...";
+            if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes("YOUR_SCRIPT_ID")) {
+                document.getElementById('syncStatus').innerText = "⚠️ ยังไม่ได้ใส่ Script URL";
+                updateDashboardStats();
+                renderActiveList();
+                renderHistoryTable();
+                return;
+            }
+
+            fetch(GOOGLE_SCRIPT_URL)
+                .then(res => res.json())
+                .then(data => {
+                    records = data || [];
+                    document.getElementById('syncStatus').innerText = "● ซิงค์ข้อมูลล่าสุดแล้ว";
+                    updateDashboardStats();
+                    renderActiveList();
+                    renderHistoryTable();
+                })
+                .catch(err => {
+                    console.error("Error loading remote data:", err);
+                    document.getElementById('syncStatus').innerText = "❌ การซิงค์ล้มเหลว";
+                });
+        }
 
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.getElementById(tabId).classList.remove('hidden');
 
             document.querySelectorAll('.menu-btn').forEach(btn => {
-                btn.classList.remove('bg-brand-100', 'text-brand-700', 'font-medium');
-                btn.classList.add('text-gray-500');
+                btn.classList.remove('bg-emerald-600', 'text-white', 'font-medium');
+                btn.classList.add('text-emerald-100/70');
             });
 
             const activeBtn = document.getElementById('btn-' + tabId);
             if (activeBtn) {
-                activeBtn.classList.add('bg-brand-100', 'text-brand-700', 'font-medium');
-                activeBtn.classList.remove('text-gray-500');
+                activeBtn.classList.add('bg-emerald-600', 'text-white', 'font-medium');
+                activeBtn.classList.remove('text-emerald-100/70');
             }
         }
 
@@ -427,6 +474,7 @@ function sendToGoogleSheet(data) {
             }
 
             const sarabanNo = document.getElementById('sarabanNumber').value;
+            const remark = document.getElementById('borrowRemark').value;
 
             const newRecord = {
                 id: Date.now(),
@@ -438,10 +486,22 @@ function sendToGoogleSheet(data) {
                 district: document.getElementById('district').value,
                 items: selectedItems,
                 sarabanNo: sarabanNo,
+                remark: remark,
                 status: 'กำลังดำเนินการ'
             };
 
-            records.push(newRecord);
+            // ส่งข้อมูลไปยัง Google Sheet
+            if (GOOGLE_SCRIPT_URL && !GOOGLE_SCRIPT_URL.includes("YOUR_SCRIPT_ID")) {
+                fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: "create", data: newRecord })
+                }).then(() => loadRemoteData());
+            } else {
+                records.push(newRecord);
+                updateDashboardStats();
+                renderActiveList();
+                renderHistoryTable();
+            }
 
             sendNotification('borrow', newRecord);
 
@@ -451,9 +511,6 @@ function sendToGoogleSheet(data) {
             document.getElementById('sarabanBox').classList.add('hidden');
             document.getElementById('otherDetail').classList.add('hidden');
 
-            updateDashboardStats();
-            renderActiveList();
-            renderHistoryTable();
             switchTab('section3');
         }
 
@@ -479,35 +536,45 @@ function sendToGoogleSheet(data) {
             const activeItems = records.filter(r => r.group === currentActiveGroupFilter && r.status === 'กำลังดำเนินการ');
 
             if (activeItems.length === 0) {
-                container.innerHTML = `<div class="col-span-2 text-center py-10 bg-white rounded-2xl border border-dashed border-gray-200 text-gray-400">
-                    <i class="fa-regular fa-folder-open text-3xl mb-2"></i>
-                    <p>ไม่มีรายการที่กำลังดำเนินการสำหรับ ${currentActiveGroupFilter}</p>
+                container.innerHTML = `<div class="col-span-2 text-center py-12 bg-white rounded-2xl border border-dashed border-gray-200 text-gray-400">
+                    <i class="fa-regular fa-folder-open text-4xl mb-2"></i>
+                    <p class="text-base">ไม่มีรายการที่กำลังดำเนินการสำหรับ ${currentActiveGroupFilter}</p>
                 </div>`;
                 return;
             }
 
             activeItems.forEach(item => {
                 const card = document.createElement('div');
-                card.className = "bg-white p-5 rounded-2xl border border-gray-200 shadow-sm flex flex-col justify-between space-y-4";
+                card.className = "bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex flex-col justify-between space-y-4 relative";
+                
+                // ข้อ 5: ปรับปุ่มประสงค์คืนให้ใหญ่ขึ้น เด่นชัด
                 card.innerHTML = `
                     <div>
                         <div class="flex justify-between items-start">
-                            <span class="text-xs bg-amber-100 text-amber-700 font-semibold px-2.5 py-1 rounded-full">⏳ กำลังดำเนินการ</span>
-                            <span class="text-xs text-gray-400"><i class="fa-regular fa-calendar mr-1"></i>${item.date}</span>
+                            <span class="text-xs bg-amber-100 text-amber-800 font-semibold px-3 py-1.5 rounded-full">⏳ กำลังดำเนินการ</span>
+                            <span class="text-sm text-gray-400"><i class="fa-regular fa-calendar mr-1"></i>${item.date}</span>
                         </div>
-                        <h4 class="font-bold text-gray-800 mt-2 text-base">ผู้เบิก: ${item.borrower}</h4>
-                        <div class="text-xs text-gray-500 space-y-1 mt-2 bg-gray-50 p-3 rounded-xl">
+                        <h4 class="font-bold text-gray-800 mt-3 text-lg">ผู้เบิก: ${item.borrower}</h4>
+                        <div class="text-sm text-gray-600 space-y-1.5 mt-3 bg-gray-50 p-4 rounded-xl border border-gray-100">
                             <p><strong>แปลงที่:</strong> ${item.plot}</p>
                             <p><strong>กลุ่ม/ระวางที่:</strong> ${item.landGroup}</p>
                             <p><strong>อำเภอ:</strong> ${item.district}</p>
-                            ${item.sarabanNo ? `<p class="text-amber-700 font-medium"><strong>เลขสารบัญ:</strong> ${item.sarabanNo}</p>` : ''}
+                            ${item.sarabanNo ? `<p class="text-amber-800 font-medium"><strong>เลขสารบัญ:</strong> ${item.sarabanNo}</p>` : ''}
                             <p><strong>รายการ:</strong> ${item.items.join(', ')}</p>
+                            ${item.remark ? `<p class="text-gray-500 font-normal"><strong>หมายเหตุ:</strong> ${item.remark}</p>` : ''}
                         </div>
                     </div>
-                    <button onclick="openReturnModal(${item.id})" class="w-full py-2 bg-brand-50 text-brand-700 font-medium rounded-xl hover:bg-brand-600 hover:text-white transition text-xs flex items-center justify-center space-x-1">
-                        <i class="fa-solid fa-rotate-left"></i>
-                        <span>ประสงค์คืนสารบบ</span>
-                    </button>
+                    <div class="flex space-x-2 pt-2">
+                        <!-- ปุ่มประสงค์คืนขนาดใหญ่ เด่นชัด -->
+                        <button onclick="openReturnModal(${item.id})" class="flex-1 py-3 bg-brand-600 text-white font-semibold rounded-xl hover:bg-brand-700 transition text-base shadow-md flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-rotate-left text-lg"></i>
+                            <span>ประสงค์คืนสารบบ</span>
+                        </button>
+                        <!-- ข้อ 4: ปุ่มลบรายการในเมนูกำลังดำเนินการ -->
+                        <button onclick="openDeleteModal(${item.id})" class="px-4 py-3 bg-red-50 text-red-600 rounded-xl hover:bg-red-600 hover:text-white transition text-base border border-red-200" title="ลบรายการ">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
                 `;
                 container.appendChild(card);
             });
@@ -515,7 +582,7 @@ function sendToGoogleSheet(data) {
 
         function openReturnModal(id) {
             pendingReturnId = id;
-            const item = records.find(r => r.id === id);
+            const item = records.find(r => r.id == id);
             if (!item) return;
             document.getElementById('modalItemDetails').innerHTML = `
                 <p><strong>ผู้เบิก:</strong> ${item.borrower}</p>
@@ -533,10 +600,17 @@ function sendToGoogleSheet(data) {
 
         document.getElementById('confirmReturnBtn').onclick = () => {
             if (pendingReturnId) {
-                const item = records.find(r => r.id === pendingReturnId);
+                const item = records.find(r => r.id == pendingReturnId);
                 if (item) {
                     item.status = 'คืนสารบบแล้ว';
                     sendNotification('return', item);
+
+                    if (GOOGLE_SCRIPT_URL && !GOOGLE_SCRIPT_URL.includes("YOUR_SCRIPT_ID")) {
+                        fetch(GOOGLE_SCRIPT_URL, {
+                            method: 'POST',
+                            body: JSON.stringify({ action: "updateStatus", id: item.id, status: 'คืนสารบบแล้ว' })
+                        }).then(() => loadRemoteData());
+                    }
                 }
 
                 closeReturnModal();
@@ -547,12 +621,50 @@ function sendToGoogleSheet(data) {
             }
         };
 
+        // ข้อ 4: Modal และฟังก์ชันสำหรับการลบรายการ
+        function openDeleteModal(id) {
+            pendingDeleteId = id;
+            const item = records.find(r => r.id == id);
+            if (!item) return;
+            document.getElementById('deleteModalDetails').innerHTML = `
+                <p><strong>ผู้เบิก:</strong> ${item.borrower}</p>
+                <p><strong>กลุ่มงาน:</strong> ${item.group}</p>
+                <p><strong>แปลงที่:</strong> ${item.plot} (ระวาง: ${item.landGroup})</p>
+                <p><strong>วันที่เบิก:</strong> ${item.date}</p>
+            `;
+            document.getElementById('deleteModal').classList.remove('hidden');
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.add('hidden');
+            pendingDeleteId = null;
+        }
+
+        document.getElementById('confirmDeleteBtn').onclick = () => {
+            if (pendingDeleteId) {
+                if (GOOGLE_SCRIPT_URL && !GOOGLE_SCRIPT_URL.includes("YOUR_SCRIPT_ID")) {
+                    fetch(GOOGLE_SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: "delete", id: pendingDeleteId })
+                    }).then(() => loadRemoteData());
+                } else {
+                    records = records.filter(r => r.id != pendingDeleteId);
+                    updateDashboardStats();
+                    renderActiveList();
+                    renderHistoryTable();
+                }
+
+                closeDeleteModal();
+                alert('ลบรายการเรียบร้อยแล้ว');
+            }
+        };
+
         function renderHistoryTable() {
             const tbody = document.getElementById('historyTableBody');
             tbody.innerHTML = '';
 
             if (records.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-gray-400">ยังไม่มีประวัติการเบิก-คืน</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-gray-400 text-base">ยังไม่มีประวัติการเบิก-คืน</td></tr>`;
                 return;
             }
 
@@ -561,16 +673,23 @@ function sendToGoogleSheet(data) {
                 tr.className = "hover:bg-gray-50/50 transition";
                 
                 const statusBadge = item.status === 'กำลังดำเนินการ' 
-                    ? `<span class="bg-amber-100 text-amber-700 text-xs px-2.5 py-1 rounded-full font-medium">⏳ กำลังดำเนินการ</span>`
-                    : `<span class="bg-green-100 text-green-700 text-xs px-2.5 py-1 rounded-full font-medium">✅ คืนสารบบแล้ว</span>`;
+                    ? `<span class="bg-amber-100 text-amber-800 text-xs px-3 py-1 rounded-full font-medium">⏳ กำลังดำเนินการ</span>`
+                    : `<span class="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full font-medium">✅ คืนสารบบแล้ว</span>`;
 
                 tr.innerHTML = `
                     <td class="p-4 text-gray-600">${item.date}</td>
                     <td class="p-4 font-medium text-gray-800">${item.group}</td>
                     <td class="p-4 text-gray-700">${item.borrower}</td>
-                    <td class="p-4 text-gray-600 text-xs">แปลง ${item.plot}, ระวาง ${item.landGroup}, ${item.district}</td>
-                    <td class="p-4 text-gray-600 text-xs">${item.items.join(', ')}${item.sarabanNo ? `<br><span class="text-amber-600">(เลขสารบัญ: ${item.sarabanNo})</span>` : ''}</td>
+                    <td class="p-4 text-gray-600 text-sm">แปลง ${item.plot}, ระวาง ${item.landGroup}, ${item.district}</td>
+                    <td class="p-4 text-gray-600 text-sm">${item.items.join(', ')}${item.sarabanNo ? `<br><span class="text-amber-700">(เลขสารบัญ: ${item.sarabanNo})</span>` : ''}</td>
+                    <td class="p-4 text-gray-500 text-sm">${item.remark || '-'}</td>
                     <td class="p-4 text-center">${statusBadge}</td>
+                    <td class="p-4 text-center">
+                        <!-- ปุ่มลบรายการในประวัติ -->
+                        <button onclick="openDeleteModal(${item.id})" class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition" title="ลบรายการ">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -613,7 +732,8 @@ function sendToGoogleSheet(data) {
                         { name: "ผู้เบิก", value: data.borrower, inline: true },
                         { name: "วันที่", value: data.date, inline: true },
                         { name: "รายละเอียดแปลง", value: `แปลงที่: ${data.plot}\nกลุ่ม/ระวาง: ${data.landGroup}\nอำเภอ: ${data.district}`, inline: false },
-                        { name: "รายการเอกสาร", value: data.items.join(', ') + (data.sarabanNo ? `\n(เลขสารบัญ: ${data.sarabanNo})` : ''), inline: false }
+                        { name: "รายการเอกสาร", value: data.items.join(', ') + (data.sarabanNo ? `\n(เลขสารบัญ: ${data.sarabanNo})` : ''), inline: false },
+                        { name: "หมายเหตุ", value: data.remark || '-', inline: false }
                     ],
                     timestamp: new Date().toISOString()
                 }]
