@@ -7,7 +7,7 @@
     <!-- Google Fonts & Tailwind CSS -->
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome สำหรับไอคอน -->
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script>
@@ -42,15 +42,13 @@
 </head>
 <body class="h-screen flex overflow-hidden text-gray-700">
 
-    <!-- ==================== ฝั่งซ้าย: แถบเมนู (Sidebar) ==================== -->
+    <!-- แถบเมนู Sidebar -->
     <aside id="sidebar" class="w-72 bg-emerald-950 border-r border-emerald-900 flex flex-col justify-between shadow-lg z-10 sidebar-transition relative text-white">
-        <!-- ปุ่มเปิด/ปิด Sidebar -->
         <button onclick="toggleSidebar()" class="absolute -right-3 top-6 bg-emerald-600 text-white w-7 h-7 rounded-full flex items-center justify-center shadow-md hover:bg-emerald-500 transition z-20 focus:outline-none border border-emerald-400">
             <i id="toggleIcon" class="fa-solid fa-chevron-left text-xs"></i>
         </button>
 
         <div>
-            <!-- โลโก้ & ชื่อระบบ -->
             <div class="p-6 bg-black/20 border-b border-emerald-800/80 flex items-center space-x-3 overflow-hidden">
                 <div class="w-12 h-12 bg-emerald-600 text-white rounded-2xl flex items-center justify-center text-2xl shadow-md shrink-0">
                     <i class="fa-solid fa-layer-group"></i>
@@ -61,7 +59,6 @@
                 </div>
             </div>
 
-            <!-- เมนูหลัก -->
             <nav class="p-4 space-y-2">
                 <button onclick="switchTab('section1')" id="btn-section1" class="menu-btn w-full flex items-center space-x-3 px-4 py-3 rounded-2xl transition duration-200 text-white bg-emerald-700 font-medium shadow-sm">
                     <i class="fa-solid fa-layer-group text-lg shrink-0 text-white"></i>
@@ -82,7 +79,6 @@
             </nav>
         </div>
 
-        <!-- Footer แสดงผู้ใช้งาน -->
         <div class="p-4 border-t border-emerald-800/80 bg-black/20">
             <div class="flex items-center space-x-3 overflow-hidden">
                 <div class="w-9 h-9 rounded-2xl bg-emerald-800 text-white flex items-center justify-center font-bold text-sm shrink-0 border border-emerald-600">
@@ -96,10 +92,10 @@
         </div>
     </aside>
 
-    <!-- ==================== ฝั่งขวา: เนื้อหาหลัก ==================== -->
+    <!-- เนื้อหาหลัก -->
     <main class="flex-1 overflow-y-auto custom-scrollbar p-8 bg-[#f5f6f8]">
 
-        <!-- ==================== ส่วนที่ 1: หน้ารวมแต่ละกลุ่มงาน ==================== -->
+        <!-- ส่วนที่ 1: หน้ารวมแต่ละกลุ่มงาน -->
         <section id="section1" class="tab-content space-y-6">
             <header class="flex items-center space-x-3">
                 <i class="fa-solid fa-layer-group text-2xl text-gray-700"></i>
@@ -107,40 +103,28 @@
             </header>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- ช่างและแผนที่ -->
                 <div onclick="openBorrowForm('กลุ่มงานช่างและแผนที่')" class="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm hover:border-brand-500 hover:shadow-md transition cursor-pointer text-center flex flex-col items-center justify-center min-h-[200px]">
-                    <div class="text-brand-700 text-4xl mb-3">
-                        <i class="fa-solid fa-compass-drafting"></i>
-                    </div>
+                    <div class="text-brand-700 text-4xl mb-3"><i class="fa-solid fa-compass-drafting"></i></div>
                     <h3 class="text-lg font-bold text-gray-800">กลุ่มงานช่างและแผนที่</h3>
                     <p class="text-xs text-gray-400 mt-1">คลิกเพื่อไปที่แบบฟอร์มขอเบิก</p>
                 </div>
 
-                <!-- กฎหมาย -->
                 <div onclick="openBorrowForm('กลุ่มกฎหมาย')" class="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm hover:border-brand-500 hover:shadow-md transition cursor-pointer text-center flex flex-col items-center justify-center min-h-[200px]">
-                    <div class="text-brand-700 text-4xl mb-3">
-                        <i class="fa-solid fa-scale-balanced"></i>
-                    </div>
+                    <div class="text-brand-700 text-4xl mb-3"><i class="fa-solid fa-scale-balanced"></i></div>
                     <h3 class="text-lg font-bold text-gray-800">กลุ่มกฎหมาย</h3>
                     <p class="text-xs text-gray-400 mt-1">คลิกเพื่อไปที่แบบฟอร์มขอเบิก</p>
                 </div>
 
-                <!-- ยุทธศาสตร์ฯ -->
                 <div onclick="openBorrowForm('กลุ่มยุทธศาสตร์ฯ')" class="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm hover:border-brand-500 hover:shadow-md transition cursor-pointer text-center flex flex-col items-center justify-center min-h-[200px]">
-                    <div class="text-brand-700 text-4xl mb-3">
-                        <i class="fa-solid fa-chart-line"></i>
-                    </div>
+                    <div class="text-brand-700 text-4xl mb-3"><i class="fa-solid fa-chart-line"></i></div>
                     <h3 class="text-lg font-bold text-gray-800">กลุ่มยุทธศาสตร์ฯ</h3>
                     <p class="text-xs text-gray-400 mt-1">คลิกเพื่อไปที่แบบฟอร์มขอเบิก</p>
                 </div>
             </div>
 
-            <!-- แผนภูมิแสดงอัตราการเบิกและการคืนซอง -->
             <div class="bg-white p-8 rounded-2xl border border-gray-200 shadow-sm mt-8 space-y-6">
                 <h3 class="text-lg font-bold text-gray-800">แผนภูมิแสดงอัตราการเบิกและการคืนซองของแต่ละกลุ่มงาน</h3>
-                
                 <div class="space-y-6">
-                    <!-- รายการที่ 1: ช่างและแผนที่ -->
                     <div class="space-y-2">
                         <div class="text-sm font-semibold text-gray-700">
                             กลุ่มงานช่างและแผนที่ (<span id="stat-borrow-ช่าง">เบิกไปแล้ว 0 ซอง</span> / <span id="stat-return-ช่าง">คืนแล้ว 0 ซอง</span>)
@@ -150,8 +134,6 @@
                             <div id="bar-return-ช่าง" class="bg-brand-300 h-full transition-all duration-500" style="width: 0%"></div>
                         </div>
                     </div>
-
-                    <!-- รายการที่ 2: กฎหมาย -->
                     <div class="space-y-2">
                         <div class="text-sm font-semibold text-gray-700">
                             กลุ่มกฎหมาย (<span id="stat-borrow-กฎหมาย">เบิกไปแล้ว 0 ซอง</span> / <span id="stat-return-กฎหมาย">คืนแล้ว 0 ซอง</span>)
@@ -161,8 +143,6 @@
                             <div id="bar-return-กฎหมาย" class="bg-brand-300 h-full transition-all duration-500" style="width: 0%"></div>
                         </div>
                     </div>
-
-                    <!-- รายการที่ 3: ยุทธศาสตร์ฯ -->
                     <div class="space-y-2">
                         <div class="text-sm font-semibold text-gray-700">
                             กลุ่มยุทธศาสตร์ฯ (<span id="stat-borrow-ยุทธศาสตร์">เบิกไปแล้ว 0 ซอง</span> / <span id="stat-return-ยุทธศาสตร์">คืนแล้ว 0 ซอง</span>)
@@ -176,7 +156,7 @@
             </div>
         </section>
 
-        <!-- ==================== ส่วนที่ 2: แบบขอเบิก ==================== -->
+        <!-- ส่วนที่ 2: แบบฟอร์มขอเบิก -->
         <section id="section2" class="tab-content hidden space-y-6">
             <header>
                 <h2 class="text-2xl font-bold text-gray-800">📝 แบบฟอร์มขออนุมัติเบิกสารบบ</h2>
@@ -221,7 +201,7 @@
                 </div>
 
                 <div class="border-t border-gray-100 pt-4">
-                    <label class="block text-sm font-semibold text-gray-800 mb-3">รายการที่จะเบิก (เลือกได้มากกว่า 1 รายการ) <span class="text-red-500">*</span></label>
+                    <label class="block text-sm font-semibold text-gray-800 mb-3">รายการที่จะเบิก <span class="text-red-500">*</span></label>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <label class="flex items-center space-x-3 p-3 rounded-xl border border-gray-100 hover:bg-brand-50/50 cursor-pointer">
                             <input type="checkbox" name="items" value="ซอง" class="w-4 h-4 text-brand-600 rounded focus:ring-brand-500">
@@ -242,7 +222,7 @@
                     </div>
 
                     <div id="sarabanBox" class="hidden mt-4 p-4 bg-amber-50 rounded-xl border border-amber-200">
-                        <label class="block text-sm font-medium text-amber-900 mb-1">เลขสารบัญ <span class="text-red-500">* (จำเป็นต้องระบุเนื่องจากเลือก สำเนา 4-01 หรือ สำเนาโฉนดฯ)</span></label>
+                        <label class="block text-sm font-medium text-amber-900 mb-1">เลขสารบัญ <span class="text-red-500">*</span></label>
                         <input type="text" id="sarabanNumber" placeholder="ระบุเลขสารบัญ..." class="w-full px-4 py-2 bg-white rounded-lg border border-amber-300 focus:ring-2 focus:ring-amber-500 focus:outline-none">
                     </div>
 
@@ -256,7 +236,7 @@
 
                     <div class="mt-4">
                         <label class="block text-sm font-medium text-gray-700 mb-1">หมายเหตุ (ถ้ามี)</label>
-                        <textarea id="remark" rows="2" placeholder="ระบุรายละเอียดเพิ่มเติม หรือเหตุผลการเบิก..." class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-500 focus:outline-none text-sm"></textarea>
+                        <textarea id="remark" rows="2" placeholder="ระบุรายละเอียดเพิ่มเติม..." class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-500 focus:outline-none text-sm"></textarea>
                     </div>
                 </div>
 
@@ -269,7 +249,7 @@
             </form>
         </section>
 
-        <!-- ==================== ส่วนที่ 3: กำลังดำเนินการ ==================== -->
+        <!-- ส่วนที่ 3: กำลังดำเนินการ -->
         <section id="section3" class="tab-content hidden space-y-6">
             <header>
                 <h2 class="text-2xl font-bold text-gray-800">⏳ รายการกำลังดำเนินการ</h2>
@@ -288,12 +268,10 @@
                 </button>
             </div>
 
-            <div id="activeListContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <!-- Data Rendered Here -->
-            </div>
+            <div id="activeListContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
         </section>
 
-        <!-- ==================== ส่วนที่ 4: ประวัติสารบบ ==================== -->
+        <!-- ส่วนที่ 4: ประวัติสารบบ -->
         <section id="section4" class="tab-content hidden space-y-6">
             <header class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
@@ -321,9 +299,7 @@
                                 <th class="p-4 text-center">สถานะ</th>
                             </tr>
                         </thead>
-                        <tbody id="historyTableBody" class="divide-y divide-gray-100 text-sm">
-                            <!-- Data Rendered Here -->
-                        </tbody>
+                        <tbody id="historyTableBody" class="divide-y divide-gray-100 text-sm"></tbody>
                     </table>
                 </div>
             </div>
@@ -331,17 +307,15 @@
 
     </main>
 
-    <!-- Modal ยืนยันการคืนเอกสาร -->
+    <!-- Modal ยืนยันการคืน -->
     <div id="returnModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden flex items-center justify-center z-50">
         <div class="bg-white rounded-2xl p-6 w-full max-w-md shadow-xl border border-brand-100 text-center space-y-4">
             <div class="w-16 h-16 bg-brand-100 text-brand-600 rounded-full flex items-center justify-center mx-auto text-2xl">
                 <i class="fa-solid fa-rotate-left"></i>
             </div>
             <h3 class="text-xl font-bold text-gray-800">ยืนยันการคืนสารบบ</h3>
-            <p class="text-sm text-gray-500">คุณต้องการยืนยันการคืนสารบบรายการนี้เข้าสู่ระบบใช่หรือไม่?</p>
-            
+            <p class="text-sm text-gray-500">คุณต้องการยืนยันการคืนสารบบรายการนี้ใช่หรือไม่?</p>
             <div id="modalItemDetails" class="bg-gray-50 p-3 rounded-xl text-left text-xs text-gray-600 space-y-1"></div>
-            
             <div class="flex space-x-3 pt-2">
                 <button onclick="closeReturnModal()" class="flex-1 py-2.5 rounded-xl border border-gray-200 font-medium text-gray-600 hover:bg-gray-50">ยกเลิก</button>
                 <button id="confirmReturnBtn" onclick="confirmReturn()" class="flex-1 py-2.5 rounded-xl bg-brand-600 text-white font-medium hover:bg-brand-700 shadow-sm">ยืนยันการคืน</button>
@@ -349,9 +323,9 @@
         </div>
     </div>
 
-    <!-- JavaScript Logic -->
+    <!-- Script สำหรับดึงข้อมูลและจัดการหน้าเว็บ -->
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwcVm1n8SfMGlBXCzRucxnTu5nQot44KoEQ5O2jfRvBpZKolUmALBw55aevVvgwz7mDpw/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx2dDFXJnjlMWmoX4uY9IstgNDcMKvOZyN-LisdC_RvFPAN8IwgwlHkSOBefQaz1A5LcA/exec";
 
         let records = [];
         let currentActiveGroupFilter = 'กลุ่มงานช่างและแผนที่';
@@ -363,7 +337,6 @@
             loadRecordsFromSheets();
         };
 
-        // ดึงข้อมูลจาก Google Sheets
         function loadRecordsFromSheets() {
             fetch(SCRIPT_URL)
                 .then(res => res.json())
@@ -481,7 +454,6 @@
                 status: 'กำลังดำเนินการ'
             };
 
-            // บันทึกลง Google Sheets
             fetch(SCRIPT_URL, {
                 method: 'POST',
                 mode: 'no-cors',
@@ -679,115 +651,6 @@
                 document.getElementById(`bar-borrow-${g}`).style.width = `${borrowPercent}%`;
                 document.getElementById(`bar-return-${g}`).style.width = `${returnPercent}%`;
             });
-
-        // ตั้งค่า Webhook สำหรับส่งแจ้งเตือนเข้า Discord
-var WEBHOOK_URL = "https://discord.com/api/webhooks/1547244190562521111/Pbg82IFtqd5DlWvTEYNM9aRRgUDC8ikNdYGCZYq-aqF25HlqDtkoFeRJoxyORHLPvGcY";
-
-function doGet(e) {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-  var data = sheet.getDataRange().getValues();
-  
-  if (data.length <= 1) {
-    return ContentService.createTextOutput(JSON.stringify([]))
-      .setMimeType(ContentService.MimeType.JSON);
-  }
-
-  var result = [];
-  for (var i = 1; i < data.length; i++) {
-    var row = data[i];
-    result.push({
-      id: row[0],
-      date: row[1],
-      group: row[2],
-      borrower: row[3],
-      plot: row[4],
-      landGroup: row[5],
-      district: row[6],
-      items: row[7] ? row[7].toString().split(', ') : [],
-      sarabanNo: row[8],
-      remark: row[9],
-      status: row[10]
-    });
-  }
-
-  return ContentService.createTextOutput(JSON.stringify(result))
-    .setMimeType(ContentService.MimeType.JSON);
-}
-
-function doPost(e) {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-  var data = JSON.parse(e.postData.contents);
-
-  // กรณี: ยืนยันการคืนสารบบ
-  if (data.action === 'return') {
-    var values = sheet.getDataRange().getValues();
-    for (var i = 1; i < values.length; i++) {
-      if (values[i][0] == data.id) {
-        sheet.getRange(i + 1, 11).setValue('คืนสำเร็จ');
-        
-        // ข้อความแจ้งเตือนเมื่อคืนสารบบ
-        var returnMessage = "↩️ **[แจ้งเตือน] คืนสารบบเข้าสู่ระบบ**\n" +
-                            "**ผู้เบิก/คืน:** " + values[i][3] + "\n" +
-                            "**กลุ่มงาน:** " + values[i][2] + "\n" +
-                            "**แปลงที่:** " + values[i][4] + " | **ระวาง:** " + values[i][5] + "\n" +
-                            "**อำเภอ:** " + values[i][6] + "\n" +
-                            "**สถานะ:** คืนเข้าระบบเรียบร้อยแล้ว";
-                            
-        sendDiscordWebhook(returnMessage);
-        break;
-      }
-    }
-  } 
-  // กรณี: ยื่นขอเบิกใหม่
-  else {
-    var itemList = Array.isArray(data.items) ? data.items.join(', ') : data.items;
-    sheet.appendRow([
-      data.id,
-      data.date,
-      data.group,
-      data.borrower,
-      data.plot,
-      data.landGroup,
-      data.district,
-      itemList,
-      data.sarabanNo,
-      data.remark,
-      data.status
-    ]);
-
-    // ข้อความแจ้งเตือนเมื่อยื่นขอเบิกใหม่
-    var borrowMessage = "📝 **[แจ้งเตือน] มีรายการขอเบิกสารบบใหม่**\n" +
-                        "**กลุ่มงาน:** " + data.group + "\n" +
-                        "**ผู้ขอเบิก:** " + data.borrower + "\n" +
-                        "**แปลงที่:** " + data.plot + " | **กลุ่ม/ระวาง:** " + data.landGroup + "\n" +
-                        "**อำเภอ:** " + data.district + "\n" +
-                        "**รายการที่เบิก:** " + itemList + "\n" +
-                        (data.sarabanNo && data.sarabanNo !== '-' ? "**เลขสารบัญ:** " + data.sarabanNo + "\n" : "") +
-                        (data.remark && data.remark !== '-' ? "**หมายเหตุ:** " + data.remark + "\n" : "") +
-                        "**วันที่เบิก:** " + data.date;
-                  
-    sendDiscordWebhook(borrowMessage);
-  }
-
-  return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
-    .setMimeType(ContentService.MimeType.JSON);
-}
-
-// ฟังก์ชันส่งข้อความเข้า Discord Webhook
-function sendDiscordWebhook(messageText) {
-  var options = {
-    "method": "post",
-    "contentType": "application/json",
-    "payload": JSON.stringify({ "content": messageText }),
-    "muteHttpExceptions": true
-  };
-  
-  try {
-    UrlFetchApp.fetch(WEBHOOK_URL, options);
-  } catch (err) {
-    Logger.log("Error sending Webhook: " + err);
-  }
-}
         }
     </script>
 </body>
