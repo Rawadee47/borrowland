@@ -44,8 +44,8 @@
     <!-- Wrapper -->
     <div class="flex h-screen overflow-hidden">
 
-        <!-- Sidebar Navigation -->
-        <aside class="w-64 bg-white border-r border-gray-200 flex flex-col justify-between hidden md:flex">
+        <!-- Sidebar Navigation (ปรับพื้นหลังเข้ม + ตัวอักษรสีขาวทั้งหมด) -->
+        <aside class="w-64 bg-gray-900 text-white flex flex-col justify-between hidden md:flex shrink-0">
             <div class="p-6">
                 <!-- App Title -->
                 <div class="flex items-center space-x-3 mb-8">
@@ -53,34 +53,34 @@
                         <i class="fa-solid fa-folder-closed"></i>
                     </div>
                     <div>
-                        <h1 class="font-bold text-gray-800 text-lg leading-tight">ระบบสารบบ</h1>
+                        <h1 class="font-bold text-white text-lg leading-tight">ระบบสารบบ</h1>
                         <p class="text-xs text-gray-400">Document Registry</p>
                     </div>
                 </div>
 
-                <!-- Nav Links -->
+                <!-- Nav Links (ข้อความสีขาว) -->
                 <nav class="space-y-2">
-                    <button onclick="switchTab('section1')" id="nav-section1" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl font-medium text-brand-600 bg-brand-50 border border-brand-100 transition-all">
-                        <i class="fa-solid fa-magnifying-glass text-lg"></i>
-                        <span>ค้นหาสารบบ</span>
+                    <button onclick="switchTab('section1')" id="nav-section1" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl font-medium text-white bg-brand-600 shadow-sm transition-all">
+                        <i class="fa-solid fa-magnifying-glass text-lg text-white"></i>
+                        <span class="text-white">ค้นหาสารบบ</span>
                     </button>
-                    <button onclick="switchTab('section2')" id="nav-section2" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-all">
-                        <i class="fa-solid fa-plus-circle text-lg"></i>
-                        <span>บันทึกสารบบใหม่</span>
+                    <button onclick="switchTab('section2')" id="nav-section2" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl font-medium text-white hover:bg-gray-800 transition-all">
+                        <i class="fa-solid fa-plus-circle text-lg text-white"></i>
+                        <span class="text-white">บันทึกสารบบใหม่</span>
                     </button>
-                    <button onclick="switchTab('section3')" id="nav-section3" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-all">
-                        <i class="fa-solid fa-hand-holding-hand text-lg"></i>
-                        <span>บันทึก ยืม-คืน</span>
+                    <button onclick="switchTab('section3')" id="nav-section3" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl font-medium text-white hover:bg-gray-800 transition-all">
+                        <i class="fa-solid fa-hand-holding-hand text-lg text-white"></i>
+                        <span class="text-white">บันทึก ยืม-คืน</span>
                     </button>
-                    <button onclick="switchTab('section4')" id="nav-section4" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-all">
-                        <i class="fa-solid fa-file-excel text-lg"></i>
-                        <span>ประวัติสารบบ (Sheets)</span>
+                    <button onclick="switchTab('section4')" id="nav-section4" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-xl font-medium text-white hover:bg-gray-800 transition-all">
+                        <i class="fa-solid fa-file-excel text-lg text-white"></i>
+                        <span class="text-white">ประวัติสารบบ (Sheets)</span>
                     </button>
                 </nav>
             </div>
 
             <!-- Footer Sidebar -->
-            <div class="p-4 border-t border-gray-100 text-xs text-gray-400 text-center">
+            <div class="p-4 border-t border-gray-800 text-xs text-gray-400 text-center">
                 &copy; 2026 Document Registry System
             </div>
         </aside>
@@ -95,7 +95,6 @@
                     <p class="text-lg text-gray-500">ค้นหารายการสารบบที่ลงทะเบียนไว้ในระบบ</p>
                 </header>
 
-                <!-- Search Input -->
                 <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm flex items-center space-x-3">
                     <i class="fa-solid fa-magnifying-glass text-gray-400 text-xl pl-2"></i>
                     <input type="text" placeholder="พิมพ์ชื่อสารบบ, เลขที่เอกสาร, หรือชื่อผู้ถือครอง..." class="w-full text-base bg-transparent border-0 focus:outline-none focus:ring-0 text-gray-800">
@@ -104,7 +103,6 @@
                     </button>
                 </div>
 
-                <!-- Quick Stats / Placeholder -->
                 <div class="bg-white p-8 rounded-2xl border border-gray-200 text-center space-y-3">
                     <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto text-gray-400 text-2xl">
                         <i class="fa-solid fa-box-archive"></i>
@@ -174,7 +172,7 @@
                 </form>
             </section>
 
-            <!-- ==================== ส่วนที่ 4: ประวัติสารบบทั้งหมด (Google Sheets Embed) ==================== -->
+            <!-- ==================== ส่วนที่ 4: ประวัติสารบบทั้งหมด (มีระบบค้นหาเฉพาะ) ==================== -->
             <section id="section4" class="tab-content hidden space-y-6">
                 <header class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
@@ -182,19 +180,51 @@
                         <p class="text-lg text-gray-500">ตารางข้อมูลสารบบจริงจาก Google Sheets (อัปเดต Real-time)</p>
                     </div>
                     
-                    <!-- ปุ่มสำหรับเปิดไปที่ Google Sheets ในแท็บใหม่ -->
-                    <a href="https://docs.google.com/spreadsheets/d/1y94heQqeeVzMyuoLTEYnf1eM_biBYIvpDyZKqtOuunY/edit?usp=sharing" target="_blank" class="inline-flex items-center space-x-2 px-5 py-2.5 bg-brand-600 text-white font-medium rounded-xl hover:bg-brand-700 transition-all shadow-sm">
+                    <a href="https://docs.google.com/spreadsheets/d/1y94heQqeeVzMyuoLTEYnf1eM_biBYIvpDyZKqtOuunY/edit?usp=sharing" target="_blank" class="inline-flex items-center space-x-2 px-5 py-2.5 bg-brand-600 text-white font-medium rounded-xl hover:bg-brand-700 transition-all shadow-sm shrink-0">
                         <i class="fa-solid fa-arrow-up-right-from-square"></i>
                         <span>เปิดใน Google Sheets</span>
                     </a>
                 </header>
 
+                <!-- ฟอร์มค้นหาเฉพาะส่วนประวัติสารบบ (แปลงที่/กลุ่ม/ระวางที่/ผู้เบิก) -->
+                <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
+                    <h3 class="text-lg font-semibold text-gray-800 flex items-center space-x-2">
+                        <i class="fa-solid fa-filter text-brand-600"></i>
+                        <span>ค้นหาข้อมูลในประวัติสารบบ</span>
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-500 mb-1">เลขแปลงที่</label>
+                            <input type="text" placeholder="ระบุแปลงที่..." class="w-full px-3 py-2 text-sm rounded-xl border border-gray-200 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-500 mb-1">กลุ่ม</label>
+                            <input type="text" placeholder="ระบุกลุ่ม..." class="w-full px-3 py-2 text-sm rounded-xl border border-gray-200 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-500 mb-1">ระวางที่</label>
+                            <input type="text" placeholder="ระบุระวางที่..." class="w-full px-3 py-2 text-sm rounded-xl border border-gray-200 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-500 mb-1">ชื่อผู้เบิก</label>
+                            <input type="text" placeholder="ระบุชื่อผู้เบิก..." class="w-full px-3 py-2 text-sm rounded-xl border border-gray-200 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100">
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end space-x-3 pt-2">
+                        <button type="button" class="px-5 py-2 bg-gray-100 text-gray-600 rounded-xl hover:bg-gray-200 font-medium text-sm transition-all">
+                            ล้างค่า
+                        </button>
+                        <button type="button" class="px-6 py-2 bg-brand-600 text-white rounded-xl hover:bg-brand-700 font-medium text-sm shadow-sm transition-all flex items-center space-x-2">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <span>ค้นหาในสารบบ</span>
+                        </button>
+                    </div>
+                </div>
+
                 <!-- กรอบสำหรับฝัง Google Sheets -->
-                <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden h-[700px] w-full">
-                    <!-- 
-                        คำแนะนำ: นำ URL ที่ได้จาก File > Share > Publish to web ของ Google Sheets 
-                        มาใส่แทนที่ในช่อง src ด้านล่างนี้ครับ 
-                    -->
+                <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden h-[650px] w-full">
                     <iframe 
                         src="https://docs.google.com/spreadsheets/d/1y94heQqeeVzMyuoLTEYnf1eM_biBYIvpDyZKqtOuunY/edit?usp=sharing" 
                         class="w-full h-full border-0"
@@ -209,28 +239,24 @@
     <!-- JavaScript สำหรับสลับ Tab -->
     <script>
         function switchTab(tabId) {
-            // ซ่อนทุก Section
             const contents = document.querySelectorAll('.tab-content');
             contents.forEach(content => content.classList.add('hidden'));
 
-            // แสดง Section ที่เลือก
             const activeTab = document.getElementById(tabId);
             if (activeTab) {
                 activeTab.classList.remove('hidden');
             }
 
-            // รีเซ็ตสไตล์ของ Nav Buttons ทั้งหมด
             const buttons = document.querySelectorAll('.nav-btn');
             buttons.forEach(btn => {
-                btn.classList.remove('text-brand-600', 'bg-brand-50', 'border', 'border-brand-100');
-                btn.classList.add('text-gray-600', 'hover:bg-gray-100', 'hover:text-gray-900');
+                btn.classList.remove('bg-brand-600', 'shadow-sm');
+                btn.classList.add('hover:bg-gray-800');
             });
 
-            // เพิ่มสไตล์ active ให้ปุ่มที่ถูกเลือก
             const activeButton = document.getElementById('nav-' + tabId);
             if (activeButton) {
-                activeButton.classList.remove('text-gray-600', 'hover:bg-gray-100', 'hover:text-gray-900');
-                activeButton.classList.add('text-brand-600', 'bg-brand-50', 'border', 'border-brand-100');
+                activeButton.classList.remove('hover:bg-gray-800');
+                activeButton.classList.add('bg-brand-600', 'shadow-sm');
             }
         }
     </script>
