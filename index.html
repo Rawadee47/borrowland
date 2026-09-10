@@ -42,7 +42,7 @@
 </head>
 <body class="h-screen flex overflow-hidden text-gray-700">
 
-    <!-- ==================== ฝั่งซ้าย: แถบเมนู (Sidebar) สีเขียวเข้ม ตัวอักษรสีขาวทั้งหมด ==================== -->
+    <!-- ==================== ฝั่งซ้าย: แถบเมนู (Sidebar) ==================== -->
     <aside id="sidebar" class="w-72 bg-emerald-950 border-r border-emerald-900 flex flex-col justify-between shadow-lg z-10 sidebar-transition relative text-white">
         <!-- ปุ่มเปิด/ปิด Sidebar -->
         <button onclick="toggleSidebar()" class="absolute -right-3 top-6 bg-emerald-600 text-white w-7 h-7 rounded-full flex items-center justify-center shadow-md hover:bg-emerald-500 transition z-20 focus:outline-none border border-emerald-400">
@@ -90,13 +90,13 @@
                 </div>
                 <div class="sidebar-text whitespace-nowrap">
                     <p class="text-xs font-semibold text-white">ผู้ดูแลระบบ</p>
-                    <p class="text-[10px] text-white font-medium opacity-90">● เชื่อมต่อ Webhook แล้ว</p>
+                    <p class="text-[10px] text-emerald-400 font-medium">● เชื่อมต่อ Apps Script แล้ว</p>
                 </div>
             </div>
         </div>
     </aside>
 
-    <!-- ==================== ฝั่งขวา: เนื้อหาหลัก (Content Area) ==================== -->
+    <!-- ==================== ฝั่งขวา: เนื้อหาหลัก ==================== -->
     <main class="flex-1 overflow-y-auto custom-scrollbar p-8 bg-[#f5f6f8]">
 
         <!-- ==================== ส่วนที่ 1: หน้ารวมแต่ละกลุ่มงาน ==================== -->
@@ -261,7 +261,7 @@
                 </div>
 
                 <div class="pt-4">
-                    <button type="submit" class="w-full py-3 bg-brand-600 text-white font-medium rounded-xl shadow-md hover:bg-brand-700 transition flex items-center justify-center space-x-2">
+                    <button type="submit" id="submitBtn" class="w-full py-3 bg-brand-600 text-white font-medium rounded-xl shadow-md hover:bg-brand-700 transition flex items-center justify-center space-x-2">
                         <i class="fa-solid fa-paper-plane"></i>
                         <span>ยื่นขอเบิกสารบบ</span>
                     </button>
@@ -293,7 +293,7 @@
             </div>
         </section>
 
-        <!-- ==================== ส่วนที่ 4: ประวัติสารบบ + ช่องค้นหา ==================== -->
+        <!-- ==================== ส่วนที่ 4: ประวัติสารบบ ==================== -->
         <section id="section4" class="tab-content hidden space-y-6">
             <header class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
@@ -301,7 +301,6 @@
                     <p class="text-sm text-gray-500">รวมประวัติการเบิก-คืน ทั้งหมดพร้อมสถานะการดำเนินการ</p>
                 </div>
 
-                <!-- ช่องค้นหากลุ่ม/ระวางที่ และข้อมูลอื่นๆ -->
                 <div class="relative w-full md:w-80">
                     <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"></i>
                     <input type="text" id="searchInput" oninput="renderHistoryTable()" placeholder="ค้นหากลุ่ม/ระวางที่, แปลงที่, ผู้เบิก..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-600 focus:outline-none text-sm bg-white shadow-sm">
@@ -345,29 +344,36 @@
             
             <div class="flex space-x-3 pt-2">
                 <button onclick="closeReturnModal()" class="flex-1 py-2.5 rounded-xl border border-gray-200 font-medium text-gray-600 hover:bg-gray-50">ยกเลิก</button>
-                <button id="confirmReturnBtn" class="flex-1 py-2.5 rounded-xl bg-brand-600 text-white font-medium hover:bg-brand-700 shadow-sm">ยืนยันการคืน</button>
+                <button id="confirmReturnBtn" onclick="confirmReturn()" class="flex-1 py-2.5 rounded-xl bg-brand-600 text-white font-medium hover:bg-brand-700 shadow-sm">ยืนยันการคืน</button>
             </div>
         </div>
     </div>
 
-    <!-- JavaScript logic -->
+    <!-- JavaScript Logic -->
     <script>
-        const WEBHOOK_URL = "https://discord.com/api/webhooks/1547244190562521111/Pbg82IFtqd5DlWvTEYNM9aRRgUDC8ikNdYGCZYq-aqF25HlqDtkoFeRJoxyORHLPvGcY";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx2dDFXJnjlMWmoX4uY9IstgNDcMKvOZyN-LisdC_RvFPAN8IwgwlHkSOBefQaz1A5LcA/exec";
 
-        let records = JSON.parse(localStorage.getItem('saraban_records')) || [];
+        let records = [];
         let currentActiveGroupFilter = 'กลุ่มงานช่างและแผนที่';
         let pendingReturnId = null;
         let isSidebarCollapsed = false;
 
         window.onload = () => {
             document.getElementById('borrowDate').valueAsDate = new Date();
-            updateDashboardStats();
-            renderActiveList();
-            renderHistoryTable();
+            loadRecordsFromSheets();
         };
 
-        function saveRecords() {
-            localStorage.setItem('saraban_records', JSON.stringify(records));
+        // ดึงข้อมูลจาก Google Sheets
+        function loadRecordsFromSheets() {
+            fetch(SCRIPT_URL)
+                .then(res => res.json())
+                .then(data => {
+                    records = data;
+                    updateDashboardStats();
+                    renderActiveList();
+                    renderHistoryTable();
+                })
+                .catch(err => console.error("Error loading data:", err));
         }
 
         function toggleSidebar() {
@@ -402,8 +408,10 @@
             });
 
             const activeBtn = document.getElementById('btn-' + tabId);
-            activeBtn.classList.add('bg-emerald-700', 'shadow-sm');
-            activeBtn.classList.remove('hover:bg-emerald-800');
+            if (activeBtn) {
+                activeBtn.classList.add('bg-emerald-700', 'shadow-sm');
+                activeBtn.classList.remove('hover:bg-emerald-800');
+            }
         }
 
         function openBorrowForm(groupName) {
@@ -455,8 +463,9 @@
                 return;
             }
 
-            const sarabanNo = document.getElementById('sarabanNumber').value;
-            const remarkVal = document.getElementById('remark').value;
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>กำลังบันทึกข้อมูล...</span>`;
 
             const newRecord = {
                 id: Date.now(),
@@ -467,26 +476,34 @@
                 landGroup: document.getElementById('landGroup').value,
                 district: document.getElementById('district').value,
                 items: selectedItems,
-                sarabanNo: sarabanNo,
-                remark: remarkVal,
+                sarabanNo: document.getElementById('sarabanNumber').value || '-',
+                remark: document.getElementById('remark').value || '-',
                 status: 'กำลังดำเนินการ'
             };
 
-            records.push(newRecord);
-            saveRecords();
-
-            sendNotification('borrow', newRecord);
-
-            alert('ยื่นขอเบิกเรียบร้อยแล้ว');
-            
-            document.getElementById('borrowForm').reset();
-            document.getElementById('sarabanBox').classList.add('hidden');
-            document.getElementById('otherDetail').classList.add('hidden');
-
-            updateDashboardStats();
-            renderActiveList();
-            renderHistoryTable();
-            switchTab('section3');
+            // บันทึกลง Google Sheets
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newRecord)
+            })
+            .then(() => {
+                alert('ยื่นขอเบิกเรียบร้อยแล้ว');
+                document.getElementById('borrowForm').reset();
+                document.getElementById('sarabanBox').classList.add('hidden');
+                document.getElementById('otherDetail').classList.add('hidden');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> <span>ยื่นขอเบิกสารบบ</span>`;
+                
+                loadRecordsFromSheets();
+                switchTab('section3');
+            })
+            .catch(err => {
+                alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> <span>ยื่นขอเบิกสารบบ</span>`;
+            });
         }
 
         function filterActiveGroup(groupName) {
@@ -519,6 +536,7 @@
             }
 
             activeItems.forEach(item => {
+                const itemList = Array.isArray(item.items) ? item.items.join(', ') : item.items;
                 const card = document.createElement('div');
                 card.className = "bg-white p-5 rounded-2xl border border-gray-200 shadow-sm flex flex-col justify-between space-y-4";
                 card.innerHTML = `
@@ -532,14 +550,14 @@
                             <p><strong>แปลงที่:</strong> ${item.plot}</p>
                             <p><strong>กลุ่ม/ระวางที่:</strong> ${item.landGroup}</p>
                             <p><strong>อำเภอ:</strong> ${item.district}</p>
-                            ${item.sarabanNo ? `<p class="text-amber-700 font-medium"><strong>เลขสารบัญ:</strong> ${item.sarabanNo}</p>` : ''}
-                            <p><strong>รายการ:</strong> ${item.items.join(', ')}</p>
-                            ${item.remark ? `<p class="text-gray-600 italic"><strong>หมายเหตุ:</strong> ${item.remark}</p>` : ''}
+                            <p><strong>รายการที่เบิก:</strong> ${itemList}</p>
+                            ${item.sarabanNo && item.sarabanNo !== '-' ? `<p><strong>เลขสารบัญ:</strong> ${item.sarabanNo}</p>` : ''}
+                            ${item.remark && item.remark !== '-' ? `<p><strong>หมายเหตุ:</strong> ${item.remark}</p>` : ''}
                         </div>
                     </div>
-                    <button onclick="openReturnModal(${item.id})" class="w-full py-2 bg-brand-50 text-brand-700 font-medium rounded-xl hover:bg-brand-600 hover:text-white transition text-xs flex items-center justify-center space-x-1">
+                    <button onclick="openReturnModal(${item.id})" class="w-full py-2 bg-brand-50 text-brand-700 font-semibold rounded-xl hover:bg-brand-100 transition border border-brand-200 flex items-center justify-center space-x-1 text-sm">
                         <i class="fa-solid fa-rotate-left"></i>
-                        <span>ประสงค์คืนสารบบ</span>
+                        <span>คืนสารบบ</span>
                     </button>
                 `;
                 container.appendChild(card);
@@ -548,12 +566,14 @@
 
         function openReturnModal(id) {
             pendingReturnId = id;
-            const item = records.find(r => r.id === id);
+            const item = records.find(r => r.id == id);
+            if (!item) return;
+
+            const itemList = Array.isArray(item.items) ? item.items.join(', ') : item.items;
             document.getElementById('modalItemDetails').innerHTML = `
                 <p><strong>ผู้เบิก:</strong> ${item.borrower}</p>
-                <p><strong>กลุ่มงาน:</strong> ${item.group}</p>
-                <p><strong>แปลงที่:</strong> ${item.plot}</p>
-                <p><strong>กลุ่ม/ระวางที่:</strong> ${item.landGroup}</p>
+                <p><strong>แปลง/ระวาง:</strong> ${item.plot} / ${item.landGroup}</p>
+                <p><strong>รายการ:</strong> ${itemList}</p>
             `;
             document.getElementById('returnModal').classList.remove('hidden');
         }
@@ -563,134 +583,102 @@
             pendingReturnId = null;
         }
 
-        document.getElementById('confirmReturnBtn').onclick = () => {
-            if (pendingReturnId) {
-                const item = records.find(r => r.id === pendingReturnId);
-                item.status = 'คืนสารบบแล้ว';
+        function confirmReturn() {
+            if (!pendingReturnId) return;
 
-                saveRecords();
+            const confirmBtn = document.getElementById('confirmReturnBtn');
+            confirmBtn.disabled = true;
+            confirmBtn.innerText = "กำลังคืน...";
 
-                sendNotification('return', item);
-
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: pendingReturnId, action: 'return' })
+            })
+            .then(() => {
+                alert('คืนสารบบสำเร็จเรียบร้อยแล้ว');
                 closeReturnModal();
-                updateDashboardStats();
-                renderActiveList();
-                renderHistoryTable();
-                alert('ดำเนินการคืนสารบบเรียบร้อยแล้ว');
-            }
-        };
+                confirmBtn.disabled = false;
+                confirmBtn.innerText = "ยืนยันการคืน";
+                loadRecordsFromSheets();
+            })
+            .catch(err => {
+                alert('เกิดข้อผิดพลาดในการคืนสารบบ');
+                confirmBtn.disabled = false;
+                confirmBtn.innerText = "ยืนยันการคืน";
+            });
+        }
 
-        // ฟังก์ชันการแสดงประวัติพร้อมตัวกรองค้นหา
         function renderHistoryTable() {
             const tbody = document.getElementById('historyTableBody');
-            const searchInput = document.getElementById('searchInput');
-            const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
-
+            const search = document.getElementById('searchInput').value.toLowerCase();
             tbody.innerHTML = '';
 
-            if (records.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-gray-400">ยังไม่มีประวัติการเบิก-คืน</td></tr>`;
+            const filtered = records.filter(r => 
+                (r.borrower && r.borrower.toLowerCase().includes(search)) ||
+                (r.landGroup && r.landGroup.toLowerCase().includes(search)) ||
+                (r.plot && r.plot.toString().toLowerCase().includes(search)) ||
+                (r.district && r.district.toLowerCase().includes(search))
+            );
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-gray-400">ไม่พบประวัติข้อมูล</td></tr>`;
                 return;
             }
 
-            // กรองข้อมูลตามคำค้นหา (กลุ่ม/ระวางที่, แปลงที่, อำเภอ, ผู้เบิก, กลุ่มงาน, เลขสารบัญ)
-            const filteredRecords = records.filter(item => {
-                if (!query) return true;
-                return (
-                    (item.landGroup && item.landGroup.toLowerCase().includes(query)) ||
-                    (item.plot && item.plot.toLowerCase().includes(query)) ||
-                    (item.district && item.district.toLowerCase().includes(query)) ||
-                    (item.borrower && item.borrower.toLowerCase().includes(query)) ||
-                    (item.group && item.group.toLowerCase().includes(query)) ||
-                    (item.sarabanNo && item.sarabanNo.toLowerCase().includes(query))
-                );
-            });
-
-            if (filteredRecords.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-gray-400">ไม่พบข้อมูลที่ตรงกับ "${query}"</td></tr>`;
-                return;
-            }
-
-            filteredRecords.forEach(item => {
+            filtered.forEach(item => {
+                const itemList = Array.isArray(item.items) ? item.items.join(', ') : item.items;
                 const tr = document.createElement('tr');
-                tr.className = "hover:bg-gray-50/50 transition";
-                
-                const statusBadge = item.status === 'กำลังดำเนินการ' 
-                    ? `<span class="bg-amber-100 text-amber-700 text-xs px-2.5 py-1 rounded-full font-medium">⏳ กำลังดำเนินการ</span>`
-                    : `<span class="bg-green-100 text-green-700 text-xs px-2.5 py-1 rounded-full font-medium">✅ คืนสารบบแล้ว</span>`;
-
+                tr.className = "hover:bg-gray-50 border-b border-gray-100";
                 tr.innerHTML = `
-                    <td class="p-4 text-gray-600">${item.date}</td>
-                    <td class="p-4 font-medium text-gray-800">${item.group}</td>
-                    <td class="p-4 text-gray-700">${item.borrower}</td>
-                    <td class="p-4 text-gray-600 text-xs">แปลง ${item.plot}, ระวาง ${item.landGroup}, ${item.district}</td>
-                    <td class="p-4 text-gray-600 text-xs">
-                        ${item.items.join(', ')}
-                        ${item.sarabanNo ? `<br><span class="text-amber-600">(สารบัญ: ${item.sarabanNo})</span>` : ''}
+                    <td class="p-4 whitespace-nowrap text-gray-500">${item.date}</td>
+                    <td class="p-4 whitespace-nowrap font-medium text-gray-800">${item.group}</td>
+                    <td class="p-4 font-medium text-gray-800">${item.borrower}</td>
+                    <td class="p-4">
+                        <div class="font-medium text-gray-800">แปลงที่ ${item.plot} (กลุ่ม/ระวาง ${item.landGroup})</div>
+                        <div class="text-xs text-gray-400">${item.district}</div>
+                    </td>
+                    <td class="p-4 text-gray-600">
+                        ${itemList}
+                        ${item.sarabanNo && item.sarabanNo !== '-' ? `<div class="text-xs text-amber-600 font-medium">เลขสารบัญ: ${item.sarabanNo}</div>` : ''}
                     </td>
                     <td class="p-4 text-gray-500 text-xs">${item.remark || '-'}</td>
-                    <td class="p-4 text-center">${statusBadge}</td>
+                    <td class="p-4 text-center whitespace-nowrap">
+                        ${item.status === 'คืนสำเร็จ' 
+                            ? `<span class="bg-emerald-100 text-emerald-700 font-semibold px-2.5 py-1 rounded-full text-xs">✓ คืนสำเร็จ</span>` 
+                            : `<span class="bg-amber-100 text-amber-700 font-semibold px-2.5 py-1 rounded-full text-xs">⏳ กำลังดำเนินการ</span>`}
+                    </td>
                 `;
                 tbody.appendChild(tr);
             });
         }
 
         function updateDashboardStats() {
-            const groupsConfig = [
-                { key: 'ช่าง', name: 'กลุ่มงานช่างและแผนที่' },
-                { key: 'กฎหมาย', name: 'กลุ่มกฎหมาย' },
-                { key: 'ยุทธศาสตร์', name: 'กลุ่มยุทธศาสตร์ฯ' }
-            ];
-
-            groupsConfig.forEach(g => {
-                const allBorrow = records.filter(r => r.group === g.name).length;
-                const returned = records.filter(r => r.group === g.name && r.status === 'คืนสารบบแล้ว').length;
-
-                document.getElementById(`stat-borrow-${g.key}`).innerText = `เบิกไปแล้ว ${allBorrow} ซอง`;
-                document.getElementById(`stat-return-${g.key}`).innerText = `คืนแล้ว ${returned} ซอง`;
-
-                const total = allBorrow || 1; 
-                const borrowPercent = (allBorrow / total) * 100;
-                const returnPercent = (returned / total) * 100;
-
-                document.getElementById(`bar-borrow-${g.key}`).style.width = allBorrow > 0 ? `${borrowPercent}%` : '0%';
-                document.getElementById(`bar-return-${g.key}`).style.width = returned > 0 ? `${returnPercent}%` : '0%';
-            });
-        }
-
-        function sendNotification(type, data) {
-            let title = type === 'borrow' ? '📥 แจ้งเตือน: มีรายการขอเบิกสารบบใหม่' : '📤 แจ้งเตือน: มีการคืนสารบบ';
-            let color = type === 'borrow' ? 3066993 : 1752220;
-
-            const payload = {
-                username: "ระบบสารบบ ส.ป.ก.ชลบุรี (Admin Only)",
-                content: "**[สำหรับผู้ดูแลระบบเท่านั้น]**",
-                embeds: [
-                    {
-                        title: title,
-                        color: color,
-                        fields: [
-                            { name: "กลุ่มงาน", value: data.group, inline: true },
-                            { name: "ผู้เบิก", value: data.borrower, inline: true },
-                            { name: "วันที่", value: data.date, inline: true },
-                            { name: "แปลงที่", value: data.plot, inline: true },
-                            { name: "กลุ่ม/ระวางที่", value: data.landGroup, inline: true },
-                            { name: "อำเภอ", value: data.district, inline: true },
-                            { name: "รายการเอกสาร", value: data.items.join(', '), inline: false },
-                            ...(data.sarabanNo ? [{ name: "เลขสารบัญ", value: data.sarabanNo, inline: true }] : []),
-                            ...(data.remark ? [{ name: "หมายเหตุ", value: data.remark, inline: false }] : [])
-                        ],
-                        footer: { text: "ระบบแจ้งเตือนสารบบ ส.ป.ก.ชลบุรี" },
-                        timestamp: new Date()
-                    }
-                ]
+            const groups = ['ช่าง', 'กฎหมาย', 'ยุทธศาสตร์'];
+            const groupFullNames = {
+                'ช่าง': 'กลุ่มงานช่างและแผนที่',
+                'กฎหมาย': 'กลุ่มกฎหมาย',
+                'ยุทธศาสตร์': 'กลุ่มยุทธศาสตร์ฯ'
             };
 
-            fetch(WEBHOOK_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            }).catch(err => console.error('Error sending webhook notification:', err));
+            groups.forEach(g => {
+                const fullName = groupFullNames[g];
+                const groupRecords = records.filter(r => r.group === fullName);
+                
+                const borrowedCount = groupRecords.filter(r => r.status === 'กำลังดำเนินการ').length;
+                const returnedCount = groupRecords.filter(r => r.status === 'คืนสำเร็จ').length;
+                const total = borrowedCount + returnedCount;
+
+                document.getElementById(`stat-borrow-${g}`).innerText = `เบิกไปแล้ว ${borrowedCount} ซอง`;
+                document.getElementById(`stat-return-${g}`).innerText = `คืนแล้ว ${returnedCount} ซอง`;
+
+                const borrowPercent = total > 0 ? (borrowedCount / total) * 100 : 0;
+                const returnPercent = total > 0 ? (returnedCount / total) * 100 : 0;
+
+                document.getElementById(`bar-borrow-${g}`).style.width = `${borrowPercent}%`;
+                document.getElementById(`bar-return-${g}`).style.width = `${returnPercent}%`;
+            });
         }
     </script>
 </body>
