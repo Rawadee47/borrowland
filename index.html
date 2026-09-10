@@ -19,6 +19,7 @@
                             50: '#f0fdf4',
                             100: '#dcfce7',
                             200: '#bbf7d0',
+                            300: '#86efac',
                             500: '#22c55e',
                             600: '#16a34a',
                             700: '#15803d',
@@ -100,7 +101,7 @@
                 <h2 class="text-2xl font-bold text-gray-800">หน้ารวมแต่ละกลุ่มงาน</h2>
             </header>
 
-            <!-- การ์ดกลุ่มงาน 3 กลุ่ม (เอาตัวเลขออกแล้ว) -->
+            <!-- การ์ดกลุ่มงาน 3 กลุ่ม -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <!-- ช่างและแผนที่ -->
                 <div onclick="openBorrowForm('กลุ่มงานช่างและแผนที่')" class="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm hover:border-brand-500 hover:shadow-md transition cursor-pointer text-center flex flex-col items-center justify-center min-h-[200px]">
@@ -130,7 +131,7 @@
                 </div>
             </div>
 
-            <!-- แผนภูมิแสดงอัตราการเบิกและการคืนซอง (เอาตัวเลขออกแล้ว) -->
+            <!-- แผนภูมิแสดงอัตราการเบิกและการคืนซอง -->
             <div class="bg-white p-8 rounded-2xl border border-gray-200 shadow-sm mt-8 space-y-6">
                 <h3 class="text-lg font-bold text-gray-800">แผนภูมิแสดงอัตราการเบิกและการคืนซองของแต่ละกลุ่มงาน</h3>
                 
@@ -279,7 +280,7 @@
             </div>
 
             <div id="activeListContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <!-- Data Rendered Here -->
+                <!-- Rendered dynamically -->
             </div>
         </section>
 
@@ -304,7 +305,7 @@
                             </tr>
                         </thead>
                         <tbody id="historyTableBody" class="divide-y divide-gray-100 text-sm">
-                            <!-- Data Rendered Here -->
+                            <!-- Rendered dynamically -->
                         </tbody>
                     </table>
                 </div>
@@ -322,7 +323,6 @@
             <h3 class="text-xl font-bold text-gray-800">ยืนยันการคืนสารบบ</h3>
             <p class="text-sm text-gray-500">คุณต้องการยืนยันการคืนสารบบรายการนี้เข้าสู่ระบบใช่หรือไม่?</p>
             
-            <!-- ปรับเปลี่ยนการแสดงผลแยกบรรทัดตรงนี้ -->
             <div id="modalItemDetails" class="bg-gray-50 p-3 rounded-xl text-left text-xs text-gray-600 space-y-1"></div>
             
             <div class="flex space-x-3 pt-2">
@@ -357,8 +357,10 @@
             });
 
             const activeBtn = document.getElementById('btn-' + tabId);
-            activeBtn.classList.add('bg-brand-100', 'text-brand-700', 'font-medium');
-            activeBtn.classList.remove('text-gray-500');
+            if (activeBtn) {
+                activeBtn.classList.add('bg-brand-100', 'text-brand-700', 'font-medium');
+                activeBtn.classList.remove('text-gray-500');
+            }
         }
 
         function openBorrowForm(groupName) {
@@ -497,10 +499,10 @@
             });
         }
 
-        // ป๊อบอัพปรับแก้การแสดงผลแยกบรรทัด
         function openReturnModal(id) {
             pendingReturnId = id;
             const item = records.find(r => r.id === id);
+            if (!item) return;
             document.getElementById('modalItemDetails').innerHTML = `
                 <p><strong>ผู้เบิก:</strong> ${item.borrower}</p>
                 <p><strong>กลุ่มงาน:</strong> ${item.group}</p>
@@ -518,9 +520,10 @@
         document.getElementById('confirmReturnBtn').onclick = () => {
             if (pendingReturnId) {
                 const item = records.find(r => r.id === pendingReturnId);
-                item.status = 'คืนสารบบแล้ว';
-
-                sendNotification('return', item);
+                if (item) {
+                    item.status = 'คืนสารบบแล้ว';
+                    sendNotification('return', item);
+                }
 
                 closeReturnModal();
                 updateDashboardStats();
@@ -534,7 +537,7 @@
             const tbody = document.getElementById('historyTableBody');
             tbody.innerHTML = '';
 
-            if(records.length === 0) {
+            if (records.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-gray-400">ยังไม่มีประวัติการเบิก-คืน</td></tr>`;
                 return;
             }
@@ -552,10 +555,7 @@
                     <td class="p-4 font-medium text-gray-800">${item.group}</td>
                     <td class="p-4 text-gray-700">${item.borrower}</td>
                     <td class="p-4 text-gray-600 text-xs">แปลง ${item.plot}, ระวาง ${item.landGroup}, ${item.district}</td>
-                    <td class="p-4 text-gray-600 text-xs">
-                        ${item.items.join(', ')}
-                        ${item.sarabanNo ? `<br><span class="text-amber-600">(สารบัญ: ${item.sarabanNo})</span>` : ''}
-                    </td>
+                    <td class="p-4 text-gray-600 text-xs">${item.items.join(', ')}${item.sarabanNo ? `<br><span class="text-amber-600">(เลขสารบัญ: ${item.sarabanNo})</span>` : ''}</td>
                     <td class="p-4 text-center">${statusBadge}</td>
                 `;
                 tbody.appendChild(tr);
@@ -563,148 +563,53 @@
         }
 
         function updateDashboardStats() {
-            const groupsConfig = [
+            const groups = [
                 { key: 'ช่าง', name: 'กลุ่มงานช่างและแผนที่' },
                 { key: 'กฎหมาย', name: 'กลุ่มกฎหมาย' },
                 { key: 'ยุทธศาสตร์', name: 'กลุ่มยุทธศาสตร์ฯ' }
             ];
 
-            groupsConfig.forEach(g => {
-                const allBorrow = records.filter(r => r.group === g.name).length;
-                const returned = records.filter(r => r.group === g.name && r.status === 'คืนสารบบแล้ว').length;
+            groups.forEach(g => {
+                const groupRecords = records.filter(r => r.group === g.name);
+                const totalBorrow = groupRecords.length;
+                const totalReturn = groupRecords.filter(r => r.status === 'คืนสารบบแล้ว').length;
 
-                document.getElementById(`stat-borrow-${g.key}`).innerText = `เบิกไปแล้ว ${allBorrow} ซอง`;
-                document.getElementById(`stat-return-${g.key}`).innerText = `คืนแล้ว ${returned} ซอง`;
+                document.getElementById(`stat-borrow-${g.key}`).innerText = `เบิกไปแล้ว ${totalBorrow} ซอง`;
+                document.getElementById(`stat-return-${g.key}`).innerText = `คืนแล้ว ${totalReturn} ซอง`;
 
-                const total = allBorrow || 1; 
-                const borrowPercent = (allBorrow / total) * 100;
-                const returnPercent = (returned / total) * 100;
+                const max = Math.max(totalBorrow, 1);
+                const borrowWidth = (totalBorrow / max) * 100;
+                const returnWidth = (totalReturn / max) * 100;
 
-                document.getElementById(`bar-borrow-${g.key}`).style.width = allBorrow > 0 ? `${borrowPercent}%` : '0%';
-                document.getElementById(`bar-return-${g.key}`).style.width = returned > 0 ? `${returnPercent}%` : '0%';
+                document.getElementById(`bar-borrow-${g.key}`).style.width = `${borrowWidth}%`;
+                document.getElementById(`bar-return-${g.key}`).style.width = `${returnWidth}%`;
             });
         }
 
         function sendNotification(type, data) {
-            let title = type === 'borrow' ? '📥 แจ้งเตือน: มีรายการขอเบิกสารบบใหม่' : '📤 แจ้งเตือน: มีการคืนสารบบ';
-            let color = type === 'borrow' ? 3066993 : 1752220;
+            if (!WEBHOOK_URL) return;
 
+            const isBorrow = type === 'borrow';
             const payload = {
-                username: "ระบบสารบบ ส.ป.ก.ชลบุรี (Admin Only)",
-                content: "**[สำหรับผู้ดูแลระบบเท่านั้น]**",
-                embeds: [
-                    {
-                        title: title,
-                        color: color,
-                        fields: [
-                            { name: "กลุ่มงาน", value: data.group, inline: true },
-                            { name: "ผู้เบิก", value: data.borrower, inline: true },
-                            { name: "วันที่", value: data.date, inline: true },
-                            { name: "แปลงที่", value: data.plot, inline: true },
-                            { name: "กลุ่ม/ระวางที่", value: data.landGroup, inline: true },
-                            { name: "อำเภอ", value: data.district, inline: true },
-                            { name: "รายการเอกสาร", value: data.items.join(', '), inline: false },
-                            ...(data.sarabanNo ? [{ name: "เลขสารบัญ", value: data.sarabanNo, inline: true }] : [])
-                        ],
-                        footer: { text: "ระบบแจ้งเตือนสารบบ ส.ป.ก.ชลบุรี" },
-                        timestamp: new Date()
-                    }
-                ]
+                embeds: [{
+                    title: isBorrow ? "📥 มีการยื่นขอเบิกสารบบใหม่" : "📤 มีการคืนสารบบเข้าระบบ",
+                    color: isBorrow ? 0xF59E0B : 0x10B981,
+                    fields: [
+                        { name: "กลุ่มงาน", value: data.group, inline: true },
+                        { name: "ผู้เบิก", value: data.borrower, inline: true },
+                        { name: "วันที่", value: data.date, inline: true },
+                        { name: "รายละเอียดแปลง", value: `แปลงที่: ${data.plot}\nกลุ่ม/ระวาง: ${data.landGroup}\nอำเภอ: ${data.district}`, inline: false },
+                        { name: "รายการเอกสาร", value: data.items.join(', ') + (data.sarabanNo ? `\n(เลขสารบัญ: ${data.sarabanNo})` : ''), inline: false }
+                    ],
+                    timestamp: new Date().toISOString()
+                }]
             };
 
             fetch(WEBHOOK_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
-            }).catch(err => console.error('Error sending webhook notification:', err));
-
-        // ใส่ URL Webhook Google Apps Script ตัวเดิมของคุณที่นี่
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx2dDFXJnjlMWmoX4uY9IstgNDcMKvOZyN-LisdC_RvFPAN8IwgwlHkSOBefQaz1A5LcA/exec";
-
-        let records = [];
-
-        window.onload = () => {
-            document.getElementById('borrowDate').valueAsDate = new Date();
-            loadRecordsFromSheets();
-        };
-
-        function loadRecordsFromSheets() {
-            fetch(SCRIPT_URL)
-                .then(res => res.json())
-                .then(data => {
-                    records = data;
-                    renderHistoryTable();
-                })
-                .catch(err => console.error("Error loading data:", err));
-        }
-
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.getElementById(tabId).classList.remove('hidden');
-        }
-
-        function openBorrowForm(groupName) {
-            document.getElementById('selectedGroup').value = groupName;
-            document.getElementById('formGroupDisplay').innerText = groupName;
-            switchTab('section2');
-        }
-
-        function handleFormSubmit(e) {
-            e.preventDefault();
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.disabled = true;
-
-            const newRecord = {
-                id: String(Date.now()),
-                date: document.getElementById('borrowDate').value,
-                group: document.getElementById('selectedGroup').value,
-                borrower: document.getElementById('borrowerName').value,
-                plot: document.getElementById('landPlot').value,
-                landGroup: document.getElementById('landGroup').value,
-                district: document.getElementById('district').value,
-                status: 'กำลังดำเนินการ'
-            };
-
-            fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newRecord)
-            })
-            .then(() => {
-                alert('ยื่นขอเบิกสำเร็จ และส่งแจ้งเตือนเข้า Discord เรียบร้อยแล้ว!');
-                document.getElementById('borrowForm').reset();
-                submitBtn.disabled = false;
-                switchTab('section4');
-                loadRecordsFromSheets();
-            });
-        }
-
-        function renderHistoryTable() {
-            const tbody = document.getElementById('historyTableBody');
-            const search = document.getElementById('searchInput').value.toLowerCase();
-            tbody.innerHTML = '';
-
-            const filtered = records.filter(r => 
-                (r.borrower && String(r.borrower).toLowerCase().includes(search)) ||
-                (r.plot && String(r.plot).toLowerCase().includes(search)) ||
-                (r.district && String(r.district).toLowerCase().includes(search))
-            );
-
-            filtered.forEach(item => {
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-gray-50 border-b border-gray-100";
-                tr.innerHTML = `
-                    <td class="p-4 whitespace-nowrap text-gray-500">${item.date}</td>
-                    <td class="p-4 font-medium text-gray-800">${item.group}</td>
-                    <td class="p-4 font-medium text-gray-800">${item.borrower}</td>
-                    <td class="p-4">แปลงที่ ${item.plot} (${item.district})</td>
-                    <td class="p-4 text-center">
-                        <span class="bg-amber-100 text-amber-700 font-semibold px-2.5 py-1 rounded-full text-xs">${item.status}</span>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
+            }).catch(err => console.error("Webhook error:", err));
         }
     </script>
 </body>
