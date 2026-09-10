@@ -334,7 +334,21 @@
 
     <!-- JavaScript logic -->
     <script>
-        const WEBHOOK_URL = "https://discord.com/api/webhooks/1547244190562521111/Pbg82IFtqd5DlWvTEYNM9aRRgUDC8ikNdYGCZYq-aqF25HlqDtkoFeRJoxyORHLPvGcY";
+const WEBHOOK_URL = "https://discord.com/api/webhooks/1547244190562521111/Pbg82IFtqd5DlWvTEYNM9aRRgUDC8ikNdYGCZYq-aqF25HlqDtkoFeRJoxyORHLPvGcY";
+const GOOGLE_SHEET_URL = "นhttps://script.google.com/macros/s/AKfycbwY50XI9P_EU8IIblP2jjfY8itvleCFUiZyE6D-TN_sAVmtQhdj8OsfMjE9H5VKavtL6A/exec"; 
+
+// แล้วเพิ่มฟังก์ชันส่งข้อมูลลง Sheet
+function sendToGoogleSheet(data) {
+    if (!GOOGLE_SHEET_URL || GOOGLE_SHEET_URL.includes("นำ URL")) return;
+    
+    fetch(GOOGLE_SHEET_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    }).catch(err => console.error("Sheet Error:", err));
+}
+        
 
         let records = [];
         let currentActiveGroupFilter = 'กลุ่มงานช่างและแผนที่';
